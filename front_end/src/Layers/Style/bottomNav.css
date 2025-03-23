@@ -1,0 +1,38 @@
+.bottom-nav {
+     position: fixed;
+     bottom: 0;
+     left: 0;
+     right: 0;
+  background-color: var(--one);
+     transition: transform 0.3s ease;
+     transform: translateY(0);
+     width: 50%;
+     margin: auto;
+     border-radius: 20px;
+     z-index: 3000;
+     
+ }
+ 
+ .bottom-nav.hidden {
+     transform: translateY(100%); /* Hide the nav when scrolling down */
+ }
+ 
+ .bottom-nav ul {
+     list-style: none;
+     display: flex;
+     justify-content: space-evenly;
+     padding: 7px 0;
+
+ }
+ 
+ .bottom-nav a {
+     text-decoration: none;
+     color: var(--five);
+     font-weight: bold;
+     font-size: 27px;
+     font-weight: 700;
+ }
+ 
+ .bottom-nav a:hover {
+     color: #796a15;
+ }

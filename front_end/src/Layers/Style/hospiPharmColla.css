@@ -1,0 +1,25 @@
+.Hospcol {
+     display: flex;
+     justify-content: center; /* Center the images horizontally */
+     align-items: center; /* Center the images vertically */
+     padding: 50px 20px;
+     height: 100vh; /* Make the container full height for better centering */
+     overflow: hidden; /* Prevents overflow issues */
+     position: relative; 
+     margin: 50px 10px;
+ }
+ 
+ .Hospcol-image {
+     position: absolute; /* Position images absolutely for overlapping */
+     transition: transform 0.3s ease; /* Smooth transition for image movement */
+ }
+ 
+ .Hospcol-image img {
+     max-width: 50%; /* Set a max width for images */
+     height: auto;
+     border-radius: 50%; /* Optional: round the images */
+ }
+ .topService{
+margin: 20px 30px;
+ }
+ 

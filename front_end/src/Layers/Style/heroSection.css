@@ -1,0 +1,54 @@
+.hero {
+     display: flex;
+     justify-content: space-between;
+     gap: 30px;
+     align-items: center;
+     padding: 20px 20px;
+     background-color: var(--six);
+ }
+ 
+ .hero-content {
+     max-width: 600px;
+ }
+ 
+ .hero h1 {
+     font-size: 2.2em;
+     margin-bottom: 20px;
+     color: var(--one);
+ }
+ 
+ .hero p {
+     font-size: 1.2em;
+     margin-bottom: 30px;
+     color: #666;
+ }
+ 
+ .cta-button {
+     padding: 15px 40px;
+     background-color: var(--two);
+     color: white;
+     text-decoration: none;
+     border-radius: 5px;
+ }
+ 
+ .cta-button:hover {
+     background-color: #010911;
+ }
+ 
+ .hero-image img {
+     max-width: 100%;
+     height: auto;
+     border-radius: 10px;
+   
+ }
+
+ @media (max-width: 768px) {
+     .hero {
+         flex-direction: column;
+         text-align: center;
+     }
+ 
+     .hero-image {
+         margin-top: 20px;
+     }
+ }

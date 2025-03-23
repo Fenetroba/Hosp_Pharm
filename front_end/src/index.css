@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+    font-family: "Poppins", serif;
+    font-style: normal;
+    box-sizing: border-box;
+   
+  }
+:root{
+    --one:#031021;
+    --two:#0b3975;  
+    --three:#1262ca;
+    --four:#5397ef;
+     --five:#a8caf7;
+     --six:#e9eef8;
+     /* for Pharmay */
+    --oneP:#041e06;
+    --twoP:#0f6f16;  
+    --threeP:#1aba24;
+    --fourP:#49e654;
+     --fiveP:#9af1a0;
+     --sixP:#f5fef5;
+     /* for Docter */
+    --oneDo:#171717;
+    --twoDO:#454545;  
+    --threeDo:#787878;
+    --fourDo:#a6a6a6;
+     --fiveDo:#d4d4d4;
+     --sixDo:#ffffff;
+
+    --HeadFsize: 2.5rem;
+    --HeadFweight: 700;
+    --parFsize: 1.5rem;
+    --parFweight: 400;
+     
+ }
