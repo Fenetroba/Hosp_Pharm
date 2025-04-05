@@ -5,6 +5,7 @@
      align-items: center;
      padding: 20px 20px;
      background-color: var(--six);
+     box-shadow: 0 0 6px rgba(3, 12, 138, 0.281);
  }
  
  .hero-content {
@@ -15,6 +16,7 @@
      font-size: 2.2em;
      margin-bottom: 20px;
      color: var(--one);
+     padding: 40px;
  }
  
  .hero p {

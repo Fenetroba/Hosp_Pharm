@@ -1,0 +1,43 @@
+
+.pharmacist-header {
+     padding: 16px;
+     background-color: var(--oneP); /* Light background color */
+   }
+   
+   .header-title {
+     cursor: pointer; /* Pointer cursor for the clickable title */
+     color: var(--sixP); /* Blue color for the title */
+     font-size: 1.5rem; /* Larger font size */
+     display: flex; /* Flexbox for alignment */
+     align-items: center; /* Center align items */
+     justify-content: space-between; /* Space between title and icon */
+   }
+   
+   .header-title:hover {
+     color: var(--adnim1); /* Darker blue on hover */
+   }
+   
+   .options-list {
+     list-style-type: none; /* Remove bullet points */
+     padding: 0; /* Remove padding */
+     margin: 10px 0 0 0; /* Margin for spacing */
+   }
+   
+   .options-list li {
+     padding: 8px 12px; /* Padding for list items */
+     background-color: var(--sixP); /* Light grey background for options */
+     border-radius: 3px; /* Rounded corners for list items */
+     margin: 5px 0; /* Margin between items */
+     transition: background-color 0.3s; /* Smooth background color transition */
+   }
+   
+   .options-list li:hover {
+     background-color: #d1e7dd; /* Change background on hover */
+   }
+   .pharmacist-header button{
+     border: none;
+     padding: 7px 40px;
+     cursor: pointer;
+     border-radius: 4px;
+     background-color: var(--adnim1);
+   }

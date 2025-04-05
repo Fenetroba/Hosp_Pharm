@@ -1,0 +1,64 @@
+.modal-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     background-color: rgba(160, 170, 201, 0.5); /* Dark background */
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     z-index: 1000; /* Ensure it's above other content */
+   
+ }
+ 
+ .modal-content {
+     background-color: var(--two);
+     padding: 20px;
+     border-radius: 8px;
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+     width: 300px; /* Fixed width for the modal */
+
+ }
+ 
+ .form-group {
+     margin-bottom: 15px;
+
+ }
+ 
+ .label {
+     display: block;
+     margin-bottom: 10px;
+ }
+ 
+ input {
+     width: 100%;
+     padding: 10px;
+     border: none;
+     outline: none;
+     border-radius: 4px;
+ }
+ 
+ .close-button {
+     margin-top: 10px;
+     background-color: var(--one); /* Red color for close button */
+     color: white;
+     border: none;
+     padding: 10px;
+     border-radius: 5px;
+     cursor: pointer;
+     width: 100%;
+ }
+ .submit{
+     background-color: var(--six);
+     width: 100%;
+     padding: 5px 0;
+     border: none;
+     cursor: pointer;
+ }
+ .submit:hover{
+     background-color: var(--four);
+ }
+ .close-button:hover {
+     background-color: #2e242496; /* Darker red on hover */
+ }

@@ -34,9 +34,9 @@ const HospiPharmColla = () => {
   }, []);
 
   return (
-    <div>
+    <div className="collaboret">
      <div className="topService">
-     <h1 className="serviceTitle">Our Services</h1>
+     <h1 className="serviceTitle">Our Goal</h1>
       <p>
         enhance the quality of care provided in hospitals and ensure that
         patients receive effective and safe medication therapies.
@@ -55,6 +55,7 @@ const HospiPharmColla = () => {
         >
           <img src={drugs} alt="Another Image" />
         </div>
+        <span style={{color:'white'}}>dfdsfdf</span>
       </div>
     </div>
   );

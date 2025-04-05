@@ -1,0 +1,79 @@
+.footer {
+     background-color:var(--five); /* Green background for the footer */
+     color: white;
+     padding: 20px 0;
+     position: relative;
+     text-align: center;
+ }
+ 
+ .semicircle {
+     position: absolute;
+     top: -50px; /* Adjust based on your design */
+     left: 0;
+     right: 0;
+     height: 100px;
+     background-color: #fff;
+     border-radius: 0 0 100% 100%;
+     z-index: 0; /* Ensure it is behind the footer content */
+ }
+ 
+ .footer-content {
+     position: relative; /* Relative positioning for footer content */
+     z-index: 1; /* Bring footer content above the semicircle */
+     display: flex;
+     justify-content: space-around;
+     flex-wrap: wrap; /* Wrap items on smaller screens */
+     padding: 20px;
+ }
+ 
+ .footer-info, .footer-links, .footer-social {
+     flex: 1;
+     min-width: 200px; /* Ensure minimum width for each section */
+ }
+ 
+ .footer-info h4, .footer-links h4, .footer-social h4 {
+     margin-bottom: 10px;
+ }
+ 
+ .footer-links ul {
+     list-style-type: none;
+     padding: 0;
+ }
+ 
+ .footer-links li {
+     margin: 5px 0;
+ }
+ 
+ .footer-links a, .footer-social a {
+     color: white; /* Link color */
+     text-decoration: none; /* Remove underline */
+ }
+ 
+ .footer-links a:hover, .footer-social a:hover {
+     text-decoration: underline; /* Underline on hover */
+ }
+ 
+ .footer-bottom {
+     margin-top: 20px;
+     font-size: 14px;
+ }
+
+
+.semicircle {
+     position: relative;
+     background: #2c3e50;
+     height: 30vh;
+   }
+   
+   .semicircle::before {
+     position: absolute;
+     content: '';
+     left: 74%;
+     z-index: 10;
+     width: 226px;
+     height: 108px;
+     border-radius: 50%;
+     background: inherit;
+     transform: translateX(-50%) translateY(47%);
+     bottom: 0px;
+   }

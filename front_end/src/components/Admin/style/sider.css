@@ -1,0 +1,52 @@
+/* sider.css */
+.admin-slider {
+     width: 250px;
+     background-color: var(--adnimO);
+     padding: 20px;
+     position: fixed;
+     height: 100%;
+     overflow-y: auto;
+     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+     transition: width 0.3s ease;
+   }
+   
+   .admin-slider.closed {
+     width: 60px; /* Collapsed state */
+   }
+   
+   .admin-slider h2 {
+     text-align: center;
+   }
+   
+   .admin-slider ul {
+     list-style: none;
+     padding: 0;
+   }
+   
+   .admin-slider li {
+     margin: 15px 0;
+   }
+   
+   .admin-slider .toggle-button {
+     background-color: #333;
+     color: white;
+     border: none;
+     border-radius: 3px;
+     padding: 10px;
+     cursor: pointer;
+     width: 100%;
+     margin-bottom: 10px;
+   }
+   
+   .admin-slider .toggle-button:hover {
+     background-color: #555;
+   }
+   
+   .admin-slider ul ul {
+     padding-left: 20px; /* Indent child items */
+     display: block;
+   }
+   
+   .admin-slider ul ul li {
+     margin: 5px 0;
+   }
