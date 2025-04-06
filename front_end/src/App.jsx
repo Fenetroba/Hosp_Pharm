@@ -17,7 +17,7 @@ import Counter from "./Layers/services";
 
 function App() {
   const user = true; // Change this based on your authentication logic
-  const role = "doctor";
+  const role = "Admin";
   const Location =useLocation()
   console.log(Location)
 

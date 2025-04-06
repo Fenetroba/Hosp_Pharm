@@ -1,30 +1,29 @@
-// PharmacistHeaded.js
-import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import './style/header.css';
+import React from "react";
+import { Pill } from "lucide-react";
 
-const PharmacistHeaded = () => {
-  const [showOptions, setShowOptions] = useState(false); // State to show/hide pharmacist options
-
-  const toggleOptions = () => {
-    setShowOptions(!showOptions);
-  };
-
+const Header = () => {
   return (
-    <div className="pharmacist-header">
-      <h3 onClick={toggleOptions} className="header-title">
-        Pharmacist {showOptions ? <FaChevronUp /> : <FaChevronDown />}
-      
-      </h3>
-      {showOptions && (
-        <ul className="options-list">
-          <li>Docter Prescription</li>
-          <li>View Pharmacists</li>
-          <li><button>Log Out</button></li>
-        </ul>
-      )}
+    <div className="fixed top-0 left-0 w-full bg-[var(--sixP)] shadow-md flex items-center justify-around min-h-[65px] z-20">
+      <div>
+        <h1 className="text-3xl font-bold">Share</h1>
+      </div>
+      <div className="header-title">
+        <h1 className="text-black">
+          {" "}
+          <span className="flex gap-3.5 text-3xl font-bold items-center">
+            {" "}
+            <span className="text-[var(--fiveP)] w-3.5"> 
+              <Pill />
+            </span>
+            <span>Pharmacyst Dashboard</span>
+          </span>
+        </h1>
+      </div>
+      <div className="header-profile">
+        <img src="/images/profile.jpg" alt="Profile" />
+      </div>
     </div>
   );
 };
 
-export default PharmacistHeaded;
+export default Header;

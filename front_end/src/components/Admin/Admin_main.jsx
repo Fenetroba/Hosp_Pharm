@@ -6,11 +6,11 @@ const Admin_main = () => {
       <h1 className="text-3xl font-bold">Admin Main Content</h1>
       <p className="mt-4">Name: email:</p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-        <div className="col-span-1 row-span-5 bg-amber-100 h-[80vh]">1</div>
-        <div className="col-span-1 md:col-span-4 row-span-4 bg-amber-100">2</div>
-        <div className="col-span-1 md:col-span-4 md:col-start-2 row-start-5 bg-amber-100">3</div>
-      </div>
+      <div className="grid grid-cols-5 grid-rows-5 gap-4">
+    <div className="row-span-5 bg-[var(--adnimO)]">1</div>
+    <div className="col-span-4 row-span-4 bg-[var(--adnimO)]">4</div>
+    <div className="col-span-4 col-start-2 row-start-5  bg-[var(--adnimO)]">5</div>
+</div>
     </div>
   );
 };

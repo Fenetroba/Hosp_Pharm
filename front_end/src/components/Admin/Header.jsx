@@ -13,7 +13,7 @@ const AdminHeader = ({ onLogout, onSearch }) => {
   return (
     <header className="admin-header fixed w-full">
       <div className="logo">
-        <h1 className='mt-10 flex gap-4 items-center text-[min(10vh,25px)]'><span>Admin Dashboard</span> <RiAdminLine/></h1> {/* Replace with your logo */}
+        <h1 className='mt-10 flex gap-4 items-center text-[min(10vh,25px)] text-[var(--adnimO)] font-bold'><span>Admin Dashboard</span> <RiAdminLine/></h1> {/* Replace with your logo */}
       </div>
       <form className="search-form" onSubmit={handleSearch}>
         <input
@@ -21,7 +21,7 @@ const AdminHeader = ({ onLogout, onSearch }) => {
           name="search"
           placeholder="Search..."
           required
-          className='shadow-sm shadow-white border-gray-300 rounded-lg p-2 '
+          className='shadow-sm shadow-black/30 border-gray-300 rounded-lg p-2 '
         />
         <button type="submit">Search</button>
       </form>
