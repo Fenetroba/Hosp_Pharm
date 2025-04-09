@@ -6,7 +6,7 @@ import BottomNav from "./Layers/BottomNav";
 import HospiPharmColla from "./Layers/HospiPharmColla";
 import AboutUs from "./Layers/AboutUs";
 import Testimonials from "./Layers/Testimonials";
-import Contact from "./Layers/CotactUs";
+import Contact from "./Layers/CotactUs"; // Consider renaming for consistency
 import Footer from "./Layers/Footer";
 import Rolecheck from "./Auth/RoleChecker/Rolecheck";
 import AdminDash_board from "./Page/Admin/AdminDash_board";
@@ -14,12 +14,16 @@ import DoctorDash_board from "./Page/Doctor/DoctorDash_board";
 import PharmacyDash_board from "./Page/Pharmacist/PharmacyDash_board";
 import NotFound from "./Page/Not Found/Not_Found";
 import Counter from "./Layers/services";
+import { useDispatch, useSelector } from "react-redux";
+import { CheckAuths } from "./store/useSlice";
+import { useEffect } from "react";
 
 function App() {
-  const user = true; // Change this based on your authentication logic
-  const role = "Admin";
-  const Location =useLocation()
-  console.log(Location)
+  const { user, isAuthenticated } = useSelector((state) => state.Auth);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(CheckAuths());
+  }, [dispatch]);
 
   return (
     <div>
@@ -27,11 +31,11 @@ function App() {
         <Route
           path="/"
           element={
-            <Rolecheck user={user} role={role}>
+            <Rolecheck isAuthenticated={isAuthenticated} user={user}>
               <Header />
               <HeroSection />
               <BottomNav />
-              <Counter/>
+              <Counter />
               <HospiPharmColla />
               <AboutUs />
               <Testimonials />
@@ -40,35 +44,31 @@ function App() {
             </Rolecheck>
           }
         />
-
         <Route
           path="DoctorDash_board"
           element={
-            <Rolecheck user={user} role={role}>
+            <Rolecheck isAuthenticated={isAuthenticated} user={user}>
               <DoctorDash_board />
             </Rolecheck>
           }
         />
-
         <Route
           path="PharmaDash_board"
           element={
-            <Rolecheck user={user} role={role}>
+            <Rolecheck isAuthenticated={isAuthenticated} user={user}>
               <PharmacyDash_board />
             </Rolecheck>
           }
         />
-
         <Route
           path="AdminDash_board"
           element={
-            <Rolecheck user={user} role={role}>
+            <Rolecheck isAuthenticated={isAuthenticated} user={user}>
               <AdminDash_board />
             </Rolecheck>
           }
         />
-
-        <Route path="*" element={<NotFound/>}/>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

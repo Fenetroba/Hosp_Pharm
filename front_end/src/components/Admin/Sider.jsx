@@ -1,18 +1,63 @@
 import React, { useState } from "react";
-import { Logs,LayoutDashboard,User ,Cog ,Bug } from "lucide-react";
+import { Logs, LayoutDashboard, User, Cog, Bug } from "lucide-react";
+
 const Sider = () => {
-  const [toggle,setoggle]=useState(false)
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [activeItem, setActiveItem] = useState("dashboard");
+
+  // Navigation items configuration
+  const navItems = [
+    { id: "dashboard", icon: <LayoutDashboard />, label: "Dashboard" },
+    { id: "users", icon: <User />, label: "Users" },
+    { id: "settings", icon: <Cog />, label: "Settings" },
+    { id: "reports", icon: <Bug />, label: "Reports" },
+  ];
+
+  const handleNavigation = (itemId) => {
+    setActiveItem(itemId);
+    // Add your navigation logic here
+  };
+
   return (
-    <div className={`fixed top-[55px] bg-[var(--adnimO)] h-[92vh] ${toggle ? "w-[190px] absolute" : "w-10.5"} transition-all duration-300`}>
-      <div className="absolute top-0.5 right-3 cursor-pointer text-white hover:text-gray-300 z-50" onClick={()=>setoggle(!toggle)}>
-        <Logs />
-      </div>
-      <ul className={`flex flex-col gap-2 items-center justify-center h-64  text-white mt-[300px] `}>
-        <li className=" font-bold cursor-pointer hover:t">{toggle?"Dashboard":<LayoutDashboard />} </li>
-        <li className="font-bold cursor-pointer hover:t"> {toggle?"Users":<User/>}</li>
-        <li className=" font-bold cursor-pointer hover:t">{toggle?"Settings":<Cog/>}</li>
-        <li className="font-bold cursor-pointer hover:t">{toggle?"Reports":<Bug/>}</li>
+    <div
+      className={`fixed top-[55px] bg-[var(--adnimO)] h-[calc(100vh-55px)] ${
+        isExpanded ? "w-48" : "w-16"
+      } transition-all duration-300 z-40 shadow-xl`}
+    >
+      <button
+        aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="absolute top-6 -right-3 p-1.5 bg-indigo-100 rounded-full text-black hover:bg-[var(--adnimO)] hover:text-white cursor-pointer transition-colors shadow-md"
+      >
+        <Logs className="w-5 h-5" />
+      </button>
+
+      <nav className="mt-[100px]">
+        <ul className="flex flex-col gap-2 px-2">
+          {navItems.map((item) => (
+            <li key={item.id}>
+              <button
+                onClick={() => handleNavigation(item.id)}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg  cursor-pointer
+                  ${
+                    activeItem === item.id
+                      ? "bg-[var(--adnim1)] text-white"
+                      : "text-indigo-100 hover:bg-indigo-900"
+                  }
+                  transition-colors duration-200`}
+                aria-current={activeItem === item.id ? "page" : undefined}
+              >
+                <span className="shrink-0">{item.icon}</span>
+                {isExpanded && (
+                  <span className="text-sm font-medium whitespace-nowrap">
+                    {item.label}
+                  </span>
+                )}
+              </button>
+            </li>
+          ))}
         </ul>
+      </nav>
     </div>
   );
 };

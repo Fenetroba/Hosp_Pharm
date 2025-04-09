@@ -7,5 +7,5 @@ const router = express.Router();
 router.post('/login', Login);
 // router.get('/admin', authMiddleware, roleMiddleware('admin'));
  router.get('/user', authMiddleware, getUser);  
-router.post('/logout', authMiddleware, logout);
+router.post('/logout', logout);
 export default router;

@@ -6,7 +6,13 @@ dotenv.config();
 // Register the doctor and pharmacist a new user
 export const register = async (req, res) => {
   const { name, email, password, role } = req.body;
+
   try {
+    // Check if the request body has all required fields
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -15,7 +21,7 @@ export const register = async (req, res) => {
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    
     // Create a new user
     const newUser = new User({
       name,
@@ -29,7 +35,7 @@ export const register = async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error("Error registering user:", error); // Log the error
     res.status(500).json({ message: "Server error" });
   }
 };
