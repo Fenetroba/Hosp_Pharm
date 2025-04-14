@@ -7,7 +7,7 @@ const initialState= {
      loading:false
    }
 
-   export const SerchUser = createAsyncThunk(
+   export const SearchUser = createAsyncThunk(
      "user/get_single_user",
      async (name, { rejectWithValue }) => {
        try {
@@ -76,16 +76,16 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(SerchUser.pending, (state, action) => {
+    .addCase(SearchUser.pending, (state, action) => {
      state.searchResults = []; // Clear results on failure
      state.loading=true
    })
-      .addCase(SerchUser.fulfilled, (state, action) => {
+      .addCase(SearchUser.fulfilled, (state, action) => {
         state.searchResults = action.payload; // Update state with search results
         state.loading=false
       })
       
-      .addCase(SerchUser.rejected, (state, action) => {
+      .addCase(SearchUser.rejected, (state, action) => {
         state.searchResults = []; // Clear results on failure
         state.loading=false
       })

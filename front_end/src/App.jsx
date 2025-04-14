@@ -12,18 +12,33 @@ import Rolecheck from "./Auth/RoleChecker/Rolecheck";
 import AdminDash_board from "./Page/Admin/AdminDash_board";
 import DoctorDash_board from "./Page/Doctor/DoctorDash_board";
 import PharmacyDash_board from "./Page/Pharmacist/PharmacyDash_board";
+import AdminHeader from "./components/Admin/Header";
 import NotFound from "./Page/Not Found/Not_Found";
 import Counter from "./Layers/services";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckAuths } from "./store/useSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const { user, isAuthenticated } = useSelector((state) => state.Auth);
+  const { isAuthenticated} = useSelector((state) => state.Auth);
+  
   const dispatch = useDispatch();
+  const location = useLocation();
+
   useEffect(() => {
-    dispatch(CheckAuths());
+    const checkAuth = async () => {
+      try {
+        const response = await dispatch(CheckAuths()).unwrap();
+      } catch (error) {
+        console.error("Authentication check failed:", error);
+        toast.error("Authentication check failed. Please try again.");
+      }
+    };
+
+    checkAuth();
   }, [dispatch]);
+
+  // Show loading state while checking authentication
 
   return (
     <div>
@@ -31,7 +46,7 @@ function App() {
         <Route
           path="/"
           element={
-            <Rolecheck isAuthenticated={isAuthenticated} user={user}>
+            <Rolecheck isAuthenticated={isAuthenticated} >
               <Header />
               <HeroSection />
               <BottomNav />
@@ -47,7 +62,7 @@ function App() {
         <Route
           path="DoctorDash_board"
           element={
-            <Rolecheck isAuthenticated={isAuthenticated} user={user}>
+            <Rolecheck isAuthenticated={isAuthenticated}>
               <DoctorDash_board />
             </Rolecheck>
           }
@@ -55,7 +70,7 @@ function App() {
         <Route
           path="PharmaDash_board"
           element={
-            <Rolecheck isAuthenticated={isAuthenticated} user={user}>
+            <Rolecheck isAuthenticated={isAuthenticated}>
               <PharmacyDash_board />
             </Rolecheck>
           }
@@ -63,7 +78,7 @@ function App() {
         <Route
           path="AdminDash_board"
           element={
-            <Rolecheck isAuthenticated={isAuthenticated} user={user}>
+            <Rolecheck isAuthenticated={isAuthenticated}>
               <AdminDash_board />
             </Rolecheck>
           }

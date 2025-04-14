@@ -1,16 +1,17 @@
+import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
 
-const RoleChecker = ({ children, isAuthenticated, user }) => {
+const RoleChecker = ({ children, isAuthenticated}) => {
+  const user = useSelector((state) => state.Auth);
+
+
+ 
   const location = useLocation();
   const protectedRoutes = [
     "/doctorDash_board",
     "/AdminDash_board",
     "/pharmaDash_board",
   ];
-
-  console.log("User:", user);
-  console.log("isAuthenticated:", isAuthenticated);
-  console.log("Current Path:", location.pathname);
 
   // Redirect unauthenticated users from protected routes
   if (!isAuthenticated) {
@@ -29,12 +30,9 @@ const RoleChecker = ({ children, isAuthenticated, user }) => {
     };
 
     const redirectPath = roleRedirects[user.role] || roleRedirects.default;
-    console.log("User Role:", user.role);
-    console.log("Expected Redirect Path:", redirectPath);
 
     // Redirect if the user is trying to access a path that is not their dashboard
     if (location.pathname !== redirectPath) {
-      console.log("Redirecting to:", redirectPath);
       return <Navigate to={redirectPath} />;
     }
   }

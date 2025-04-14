@@ -1,53 +1,83 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { RiAdminLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
-import { SerchUser } from '../../store/UserData__slice'; // Adjust import path as needed
-import { logoutUser } from '../../store/useSlice'; // Adjust import path as needed
+import { SearchUser } from '../../store/UserData__slice';
+import { logoutUser } from '../../store/useSlice';
 import './style/header.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
 
-// Debounce function to limit frequent API calls
+// Improved debounce function
 const debounce = (func, delay) => {
   let timer;
-  return (...args) => {
+  return function (...args) {
+    const context = this;
     clearTimeout(timer);
-    timer = setTimeout(() => func.apply(this, args), delay);
+    timer = setTimeout(() => func.apply(context, args), delay);
   };
 };
 
 const AdminHeader = () => {
+  const {name,email,role} = useSelector((state) => state.Auth.user);
+  const {isAuthenticated,userDetail} = useSelector((state) => state.Auth);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState('');
   const { searchResults, searchLoading, searchError } = useSelector((state) => state.user);
   const [showResults, setShowResults] = useState(false);
 
-  // Debounced search function
+  // Debounced search function with error handling
   const debouncedSearch = useCallback(
     debounce((value) => {
       if (value.trim()) {
-        dispatch(SerchUser(value.trim()));
+        dispatch(SearchUser(value.trim()))
+          .unwrap()
+          .catch(error => {
+            toast.error(error.message || 'Search failed');
+          });
       }
     }, 300),
     [dispatch]
   );
 
   useEffect(() => {
-    debouncedSearch(searchValue);
-    setShowResults(!!searchValue.trim());
+    if (searchValue.trim()) {
+      debouncedSearch(searchValue);
+      setShowResults(true);
+    } else {
+      setShowResults(false);
+    }
   }, [searchValue, debouncedSearch]);
 
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
   };
 
-  const onLogout = () => {
-    dispatch(logoutUser());
+  const onLogout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap();
+      toast.success('Logged out successfully');
+      navigate('/');
+    } catch (error) {
+      toast.error(error.message || 'Logout failed');
+    }
   };
 
   return (
     <header className="admin-header fixed top-0 w-full p-4 bg-white shadow-md z-50 flex items-center justify-between">
+      <ToastContainer />
       <div className="flex items-center gap-4">
         <RiAdminLine className="text-2xl text-[var(--adminO)]" />
-        <h1 className="text-xl font-bold text-gray-800">Admin Dashboard</h1>
+        <h1 className="text-xl font-bold text-gray-800 z-50">
+          Admin Dashboard
+         
+            <span className="text-2xl ml-20 text-amber-600 ">
+              [{name}]
+            
+            </span>
+      
+        </h1>
       </div>
 
       <div className="relative w-72">
@@ -56,7 +86,7 @@ const AdminHeader = () => {
           value={searchValue}
           onChange={handleSearch}
           placeholder="Search by name..."
-          className="w-full px-4 border rounded-lg  text-black"
+          className="w-full px-4 border rounded-lg text-black"
           aria-label="Search users"
           onFocus={() => setShowResults(true)}
           onBlur={() => setTimeout(() => setShowResults(false), 200)}

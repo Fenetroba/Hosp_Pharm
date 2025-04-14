@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {Registration} from '@/store/useSlice';
-import {DeleteUser,UpdateUser} from '@/store/UserData__slice';
+import { Registration } from '@/store/useSlice';
+import { DeleteUser, UpdateUser } from '@/store/UserData__slice';
+import { toast } from 'react-toastify';
 
-const UsersDetail_data = ({ selectedUser,onCreateUser, onUpdateUser, onDeleteUser }) => {
+const UsersDetail_data = ({ selectedUser, onCreateUser, onUpdateUser, onDeleteUser }) => {
   const [activeForm, setActiveForm] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: '', // Added password field
-    role: 'patient'
+    password: '',
+    role: 'Pharma' // Set default role
   });
 
   const dispatch = useDispatch();
+
+  // Add role validation
+  const validRoles = ['Pharma', 'doctor', 'Admin'];
+  
+  const validateRole = (role) => {
+    return validRoles.includes(role);
+  };
 
   // Reset form when selected user changes
   useEffect(() => {
@@ -23,40 +31,72 @@ const UsersDetail_data = ({ selectedUser,onCreateUser, onUpdateUser, onDeleteUse
         role: selectedUser.role,
         password: '' // Clear password when updating
       });
+    } else {
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        role: 'Pharma'
+      });
     }
   }, [selectedUser]);
 
   const handleInputChange = (e) => {
+    e.preventDefault();
     const { name, value } = e.target;
+    
+    // Special handling for role to ensure it's valid
+    if (name === 'role') {
+      if (!validateRole(value)) {
+        toast.error('Invalid role selected');
+        return;
+      }
+    }
+    
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleCreate = () => {
-    onCreateUser(formData);
-    setActiveForm(null);
-    setFormData({ name: '', email: '', role: 'patient' });
-    dispatch(Registration(formData));
-    console.log(formData)
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await dispatch(Registration(formData)).unwrap();
+      if (result.user) {
+        toast.success('User created successfully');
+        onCreateUser(result.user);
+        setActiveForm(null);
+        setFormData({ name: '', email: '', password: '', role: 'Pharma' });
+      }
+    } catch (error) {
+      toast.error(error.message || 'Failed to create user');
+    }
   };
 
-  const handleUpdate = () => {
-    dispatch(UpdateUser({ userId: selectedUser._id, userData: formData }))
-      .unwrap()
-      .then(() => {
-        console.log('User updated successfully');
-        onUpdateUser(UpdateUser); // Call the callback with updated data
-        setActiveForm(null); // Reset the form state
-      })
-      .catch((error) => {
-        console.error('Failed to update user:', error);
-      });
+  const handleUpdate = async () => {
+    try {
+      const result = await dispatch(UpdateUser({ 
+        userId: selectedUser._id, 
+        userData: formData 
+      })).unwrap();
+      
+      if (result.user) {
+        toast.success('User updated successfully');
+        onUpdateUser(result.user);
+        setActiveForm(null);
+      }
+    } catch (error) {
+      toast.error(error.message || 'Failed to update user');
+    }
   };
 
-  const handleDelete = () => {
-    onDeleteUser(selectedUser._id);
-    dispatch(DeleteUser(selectedUser._id));
-
-    setActiveForm(null);
+  const handleDelete = async () => {
+    try {
+      await dispatch(DeleteUser(selectedUser._id)).unwrap();
+      toast.success('User deleted successfully');
+      onDeleteUser(selectedUser._id);
+      setActiveForm(null);
+    } catch (error) {
+      toast.error(error.message || 'Failed to delete user');
+    }
   };
 
   const showForm = (formType) => {
@@ -125,9 +165,11 @@ const UsersDetail_data = ({ selectedUser,onCreateUser, onUpdateUser, onDeleteUse
               value={formData.role}
               onChange={handleInputChange}
             >
-              <option value="patient">Patient</option>
-              <option value="doctor">Doctor</option>
-              <option value="Admin">Admin</option>
+              {validRoles.map((role) => (
+                <option key={role} value={role}>
+                  {role.charAt(0).toUpperCase() + role.slice(1)}
+                </option>
+              ))}
             </select>
             <div className="flex space-x-3">
               <button
@@ -182,9 +224,11 @@ const UsersDetail_data = ({ selectedUser,onCreateUser, onUpdateUser, onDeleteUse
               value={formData.role}
               onChange={handleInputChange}
             >
-              <option value="patient">Patient</option>
-              <option value="doctor">Doctor</option>
-              <option value="Admin">Admin</option>
+              {validRoles.map((role) => (
+                <option key={role} value={role}>
+                  {role.charAt(0).toUpperCase() + role.slice(1)}
+                </option>
+              ))}
             </select>
             <div className="flex space-x-3">
               <button
