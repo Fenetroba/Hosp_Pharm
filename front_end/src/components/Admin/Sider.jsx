@@ -1,63 +1,72 @@
 import React, { useState } from "react";
 import { Logs, LayoutDashboard, User, Cog, Bug } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Sider = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [activeItem, setActiveItem] = useState("dashboard");
+  const [toggle, setToggle] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.Auth);
 
-  // Navigation items configuration
-  const navItems = [
-    { id: "dashboard", icon: <LayoutDashboard />, label: "Dashboard" },
-    { id: "users", icon: <User />, label: "Users" },
-    { id: "settings", icon: <Cog />, label: "Settings" },
-    { id: "reports", icon: <Bug />, label: "Reports" },
+  const handleNavigation = (path) => {
+    navigate(`/AdminDash_board/${path}`);
+  };
+
+  const navigationItems = [
+    {
+      path: '/',
+      label: 'Dashboard',
+      icon: <LayoutDashboard />,
+      roles: ['Admin', 'Pharma', 'doctor']
+    },
+    {
+      path: 'users',
+      label: 'Users',
+      icon: <User />,
+      roles: ['Admin']
+    },
+    {
+      path: 'settings',
+      label: 'Settings',
+      icon: <Cog />,
+      roles: ['Admin', 'Pharma']
+    },
+    {
+      path: 'reports',
+      label: 'Reports',
+      icon: <Bug />,
+      roles: ['Admin', 'Pharma', 'doctor']
+    }
   ];
 
-  const handleNavigation = (itemId) => {
-    setActiveItem(itemId);
-    // Add your navigation logic here
-  };
+  // Filter navigation items based on user role
+  const filteredNavigationItems = navigationItems.filter(item => 
+    item.roles.includes(user?.role)
+  );
 
   return (
     <div
-      className={`fixed top-[55px] bg-[var(--adnimO)] h-[calc(100vh-55px)] ${
-        isExpanded ? "w-48" : "w-16"
-      } transition-all duration-300 z-40 shadow-xl`}
+      className={`fixed flex flex-col items-center top-[66px] justify-center h-screen bg-[#031021] shadow-md ${
+        toggle ? "w-[190px] absolute" : "w-10.5"
+      } transition-all duration-300`}
     >
-      <button
-        aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="absolute top-6 -right-3 p-1.5 bg-indigo-100 rounded-full text-black hover:bg-[var(--adnimO)] hover:text-white cursor-pointer transition-colors shadow-md"
+      <div
+        className="absolute top-0.5 right-3 cursor-pointer text-white hover:text-gray-300 z-50"
+        onClick={() => setToggle(!toggle)}
       >
-        <Logs className="w-5 h-5" />
-      </button>
-
-      <nav className="mt-[100px]">
-        <ul className="flex flex-col gap-2 px-2">
-          {navItems.map((item) => (
-            <li key={item.id}>
-              <button
-                onClick={() => handleNavigation(item.id)}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg  cursor-pointer
-                  ${
-                    activeItem === item.id
-                      ? "bg-[var(--adnim1)] text-white"
-                      : "text-indigo-100 hover:bg-indigo-900"
-                  }
-                  transition-colors duration-200`}
-                aria-current={activeItem === item.id ? "page" : undefined}
-              >
-                <span className="shrink-0">{item.icon}</span>
-                {isExpanded && (
-                  <span className="text-sm font-medium whitespace-nowrap">
-                    {item.label}
-                  </span>
-                )}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+        <Logs />
+      </div>
+      <ul className={`flex flex-col gap-2 items-center justify-center h-[100px] text-white mt-[10px]`}>
+        {filteredNavigationItems.map((item) => (
+          <li 
+            key={item.path}
+            className="font-bold cursor-pointer hover:text-gray-300 flex items-center gap-2"
+            onClick={() => handleNavigation(item.path)}
+          >
+            {toggle ? item.label : item.icon}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

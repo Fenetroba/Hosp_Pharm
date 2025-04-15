@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
 
 const RoleChecker = ({ children, isAuthenticated}) => {
-  const user = useSelector((state) => state.Auth);
+  const {role} = useSelector((state) => state.Auth.user );
 
 
  
@@ -22,14 +22,14 @@ const RoleChecker = ({ children, isAuthenticated}) => {
   }
 
   // Redirect authenticated users based on their roles
-  if (isAuthenticated && user) {
+  if (isAuthenticated && role) {
     const roleRedirects = {
       doctor: "/doctorDash_board",
       Pharma: "/pharmaDash_board",
       default: "/AdminDash_board",
     };
 
-    const redirectPath = roleRedirects[user.role] || roleRedirects.default;
+    const redirectPath = roleRedirects[role] || roleRedirects.default;
 
     // Redirect if the user is trying to access a path that is not their dashboard
     if (location.pathname !== redirectPath) {

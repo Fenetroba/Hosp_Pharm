@@ -18,6 +18,9 @@ import Counter from "./Layers/services";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckAuths } from "./store/useSlice";
 import { useEffect, useState } from "react";
+import Settings from "./components/Admin/Settings";
+import Reports from "./components/Admin/Reports";
+import Users from "./components/Admin/Users";
 
 function App() {
   const { isAuthenticated} = useSelector((state) => state.Auth);
@@ -83,6 +86,13 @@ function App() {
             </Rolecheck>
           }
         />
+        <Route path="/AdminDash_board/settings" element={<Settings />} />
+        <Route path="/AdminDash_board/Reports" element={<Reports/>} />
+        <Route path="/AdminDash_board/Users" element={<Users/>} />
+    
+
+              
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
