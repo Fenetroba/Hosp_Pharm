@@ -2,21 +2,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../lib/axios.js"; // Ensure the correct path to axios
 
 const initialState = {
-  user: {
-    name: null,
-    email: null,
-    role: null,
-  },
+  user:null,
   loading: false,
   isAuthenticated: false,
-  error: null,
-  userDetail: null,
+  
 };
 
-// Helper function for error handling
-const handleErrorResponse = (error) => {
-  return error.response?.data || { message: "An error occurred." };
-};
 
 // Registration Thunk
 export const Registration = createAsyncThunk(
@@ -33,7 +24,6 @@ export const Registration = createAsyncThunk(
   }
 );
 
-// Login Thunk
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (loginData, { rejectWithValue }) => {
@@ -42,6 +32,7 @@ export const loginUser = createAsyncThunk(
         withCredentials: true,
       });
       return response.data;
+      console.log(response.data)
     } catch (error) {
       return rejectWithValue(handleErrorResponse(error));
     }
@@ -67,7 +58,7 @@ export const logoutUser = createAsyncThunk(
 export const CheckAuths = createAsyncThunk(
   "/auth/user",
   async () => {
-    const response = await axios.get("/auth/user", {
+    const response = await axios.get("/auth/check-auth", {
       withCredentials: true,
       headers: {
         "cache-control": "no-cache, no-store, must-revalidate, proxy-revalidate",
@@ -76,6 +67,7 @@ export const CheckAuths = createAsyncThunk(
     return response.data; // Ensure you return the response data
   }
 );
+
 
 // Authentication Slice
 export const authSlice = createSlice({
@@ -90,22 +82,22 @@ export const authSlice = createSlice({
     builder
       .addCase(Registration.pending, (state) => {
         state.loading = true;
+        state.isAuthenticated=false;
         state.error = null;
       })
       .addCase(Registration.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user || null;
-        state.isAuthenticated = true;
+        state.user = null;
         state.error = null;
       })
       .addCase(Registration.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
-        state.isAuthenticated = false;
         state.error = action.payload.message || "Signup failed";
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
+        state.isAuthenticated=false;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
@@ -129,8 +121,7 @@ export const authSlice = createSlice({
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
-        state.error = null;
-        state.userDetail = null;
+      
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
@@ -138,22 +129,19 @@ export const authSlice = createSlice({
       })
       .addCase(CheckAuths.pending, (state) => {
         state.loading = true;
+        state.isAuthenticated=false,
         state.error = null;
       })
-      builder
     .addCase(CheckAuths.fulfilled, (state, action) => {
       state.loading = false;
       state.isAuthenticated = true;
-      state.user.email = action.payload.email;
-      state.user.name = action.payload.name;
-      state.user.role = action.payload.role; // Ensure this matches your API response
-      state.userDetail = action.payload.userDetail; // Adjust based on your API response
+      state.user = action.payload.user; // Ensure this matches your API response
+    
     })
     .addCase(CheckAuths.rejected, (state, action) => {
       state.loading = false;
       state.isAuthenticated = false;
       state.user = null;
-      state.userDetail = null;
       state.error = action.payload.message;
     });
   },

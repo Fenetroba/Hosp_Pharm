@@ -5,14 +5,13 @@ import Admin_main from '../../components/Admin/Admin_main'
 
 
 
-const AdminDash_board = ({role}) => {
-  console.log(role);
+const AdminDash_board = ({user}) => {
 
 
   return (
 
     <div>
-      <AdminHeader role={role}/>
+      <AdminHeader user={user}/>
       <AdminSlider />
       <Admin_main/>
       </div>

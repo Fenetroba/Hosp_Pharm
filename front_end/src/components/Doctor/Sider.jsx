@@ -4,7 +4,7 @@ const Sider = () => {
   const [toggle, setoggle] = useState(false);
   return (
     <div
-      className={`fixed flex flex-col items-center top-[66px] justify-center h-screen bg-[#031021] shadow-md  ${
+      className={`fixed flex flex-col top-[66px] h-screen bg-[#031021] shadow-md  ${
         toggle ? "w-[190px] absolute" : "w-10.5"
       } transition-all duration-300`}
     >
@@ -17,8 +17,6 @@ const Sider = () => {
       <ul className={`flex flex-col gap-2 items-center justify-center h-[100px]  text-white mt-[300px] `}>
         <li className=" font-bold cursor-pointer hover:t">{toggle?"Dashboard":<LayoutDashboard />} </li>
         <li className="font-bold cursor-pointer hover:t"> {toggle?"Users":<User/>}</li>
-        <li className=" font-bold cursor-pointer hover:t">{toggle?"Settings":<Cog/>}</li>
-        <li className="font-bold cursor-pointer hover:t">{toggle?"Reports":<Bug/>}</li>
         </ul>
 
 

@@ -1,101 +1,137 @@
-
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-// Function to generate JWT tokens
-
-const generateToken = (userId) => {
-  const accessToken = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
-  const refreshToken = jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
-  return { accessToken, refreshToken };
+// Token configuration
+const TOKEN_CONFIG = {
+  access: {
+    secret: process.env.ACCESS_TOKEN_SECRET,
+    expiresIn: "15m"
+  },
+  refresh: {
+    secret: process.env.REFRESH_TOKEN_SECRET,
+    expiresIn: "7d"
+  }
 };
+
+// Generate JWT tokens
+const generateToken = (userId, username, useremail,userrole) => {
+  return {
+    accessToken: jwt.sign(
+      { userId, username, useremail,userrole },
+      TOKEN_CONFIG.access.secret,
+      { expiresIn: TOKEN_CONFIG.access.expiresIn }
+    ),
+    refreshToken: jwt.sign(
+      { userId, username, useremail,userrole },
+      TOKEN_CONFIG.refresh.secret,
+      { expiresIn: TOKEN_CONFIG.refresh.expiresIn }
+    )
+  };
+};
+
+// Set secure cookies
 const setCookies = (res, accessToken, refreshToken) => {
-  res.cookie("access_Token", accessToken, {
-    httpOnly: true, // Prevent XSS attacks
-    secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-    sameSite: "strict", // Prevent CSRF attacks
-    maxAge: 15 * 60 * 1000, // 15 minutes
-  });
-  
-  res.cookie("refresh_Token", refreshToken, {
-    httpOnly: true, // Prevent XSS attacks
-    secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-    sameSite: "strict", // Prevent CSRF attacks
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  });
-};
-export const Login = async (req, res) => {
-  const { email, password } = req.body;
+  const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict"
+  };
 
-  // Validate the email and password
+  res.cookie("access_Token", accessToken, { ...cookieOptions, maxAge: 15 * 60 * 1000 });
+  res.cookie("refresh_Token", refreshToken, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 * 1000 });
+};
+
+// Login controller
+export const Login = async (req, res) => {
   try {
+    const { email, password } = req.body;
+
+    // Input validation
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
     }
 
+    // Find user and validate password
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: "This email is not found" });
-    }
-    
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid password" });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const { accessToken, refreshToken } = generateToken(user._id); // Corrected destructuring
+    // Generate tokens and set cookies
+    const { accessToken, refreshToken } = generateToken(user._id, user.name, user.email, user.role);
     setCookies(res, accessToken, refreshToken);
-    
-    res.status(200).json({ message: "Login successful", user, refreshToken, accessToken }); // Updated response
+
+    // Return success response without sensitive data
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server error", error });
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
-export const getUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.userId).select("-password");
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server error", error });
-  }
-}
+
+// Get user profile
+// export const getUser = async (req, res) => {
+//   try {
+//     const user = await User.findById(req.user.userId).select("-password");
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+//     res.status(200).json(user);
+//   } catch (error) {
+//     console.error("Get user error:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+// Refresh token
 export const refreshToken = async (req, res) => {
-  const { refreshToken } = req.cookies;
-  if (!refreshToken) {
-    return res.status(401).json({ message: "Refresh token not found" });
-  }
-
   try {
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    const { refreshToken } = req.cookies;
+    if (!refreshToken) {
+      return res.status(401).json({ message: "Refresh token not found" });
+    }
+
+    const decoded = jwt.verify(refreshToken, TOKEN_CONFIG.refresh.secret);
     const user = await User.findById(decoded.userId).select("-password");
+    
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const { accessToken, refreshToken: newRefreshToken } = generateToken(user._id);
+    const { accessToken, refreshToken: newRefreshToken } = generateToken(
+      user._id,
+      user.name,
+      user.email,
+      user.role
+    );
     setCookies(res, accessToken, newRefreshToken);
     
-    res.status(200).json({ accessToken, refreshToken: newRefreshToken });
+    res.status(200).json({ message: "Token refreshed successfully" });
   } catch (error) {
-    console.log(error);
+    console.error("Refresh token error:", error);
     res.status(403).json({ message: "Invalid refresh token" });
   }
 };
+
+// Logout
 export const logout = async (req, res) => {
   try {
     res.clearCookie("access_Token");
     res.clearCookie("refresh_Token");
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server error", error });
+    console.error("Logout error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };

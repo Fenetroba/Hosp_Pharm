@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const LoginModal = ({ isOpen, onClose }) => {
-  const { error, isAuthenticated } = useSelector((state) => state.Auth);
+  const {  isAuthenticated,user } = useSelector((state) => state.Auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loginData, setLoginData] = useState({
@@ -20,8 +20,8 @@ const LoginModal = ({ isOpen, onClose }) => {
     e.preventDefault(); // Prevent default form submission
     
     try {
-      const result = await dispatch(loginUser(loginData)).unwrap();
-      if (result.user) {
+      const result = dispatch(loginUser(loginData));
+      if (isAuthenticated) {
         toast.success("Login successful");
         onClose(); // Close the modal on successful login
         // Redirect based on user role
@@ -43,8 +43,8 @@ const LoginModal = ({ isOpen, onClose }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <ToastContainer />
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Login</h2>
+      <div className="modal-conten" onClick={(e) => e.stopPropagation()}>
+        <h1 className="text-white font-bold text-3xl text-center mb-12">Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>
@@ -76,10 +76,9 @@ const LoginModal = ({ isOpen, onClose }) => {
             Submit
           </button>
         </form>
-        <button className="close-button" onClick={onClose}>
-          Close
-        </button>
+     
       </div>
+      
     </div>
   );
 };

@@ -31,8 +31,8 @@ const AdminDash_board = () => {
 
   return (
     <div className="flex">
-      <Sider />
       <div className="flex-1 ml-[42px] p-4">
+      <Sider />
         <Routes>
           <Route 
             path="/dashboard" 

@@ -41,12 +41,12 @@ const Sider = () => {
 
   // Filter navigation items based on user role
   const filteredNavigationItems = navigationItems.filter(item => 
-    item.roles.includes(user?.role)
+    item.roles.includes(user?.userrole || user?.role)
   );
 
   return (
     <div
-      className={`fixed flex flex-col items-center top-[66px] justify-center h-screen bg-[#031021] shadow-md ${
+      className={`fixed flex flex-col items-center top-[69px] justify-center h-screen z-30 bg-[#031021] shadow-md ${
         toggle ? "w-[190px] absolute" : "w-10.5"
       } transition-all duration-300`}
     >

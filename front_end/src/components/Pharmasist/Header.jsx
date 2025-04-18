@@ -1,7 +1,15 @@
 import React from "react";
-import { Pill } from "lucide-react";
+import { LogOut, Pill } from "lucide-react";
+import { logoutUser } from "@/store/useSlice";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
+  const dispatch=useDispatch()
+  const Logout=()=>{
+    dispatch(logoutUser()).then(
+      navigate('/')
+    )
+   }
   return (
     <div className="fixed top-0 left-0 w-full bg-[var(--sixP)] shadow-md flex items-center justify-around min-h-[65px] z-20">
       <div>
@@ -20,7 +28,8 @@ const Header = () => {
         </h1>
       </div>
       <div className="header-profile">
-        <img src="/images/profile.jpg" alt="Profile" />
+      <button onClick={Logout} className="px-8 py-1 rounded-2xl bg-amber-300 flex space-x-2.5 cursor-pointer"><span>Logout</span> <LogOut/></button>
+
       </div>
     </div>
   );

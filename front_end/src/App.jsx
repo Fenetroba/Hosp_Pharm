@@ -21,24 +21,18 @@ import { useEffect, useState } from "react";
 import Settings from "./components/Admin/Settings";
 import Reports from "./components/Admin/Reports";
 import Users from "./components/Admin/Users";
+import { toast } from "react-toastify";
 
 function App() {
-  const { isAuthenticated} = useSelector((state) => state.Auth);
-  
+  const { isAuthenticated,user} = useSelector((state) => state.Auth);
+
+
   const dispatch = useDispatch();
   const location = useLocation();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await dispatch(CheckAuths()).unwrap();
-      } catch (error) {
-        console.error("Authentication check failed:", error);
-        toast.error("Authentication check failed. Please try again.");
-      }
-    };
-
-    checkAuth();
+    dispatch(CheckAuths());
+    
   }, [dispatch]);
 
   // Show loading state while checking authentication
@@ -49,7 +43,7 @@ function App() {
         <Route
           path="/"
           element={
-            <Rolecheck isAuthenticated={isAuthenticated} >
+            <Rolecheck isAuthenticated={isAuthenticated} user={user} >
               <Header />
               <HeroSection />
               <BottomNav />
@@ -65,15 +59,16 @@ function App() {
         <Route
           path="DoctorDash_board"
           element={
-            <Rolecheck isAuthenticated={isAuthenticated}>
-              <DoctorDash_board />
+            <Rolecheck isAuthenticated={isAuthenticated} user={user} >
+              <DoctorDash_board/>
+        
             </Rolecheck>
           }
         />
         <Route
           path="PharmaDash_board"
           element={
-            <Rolecheck isAuthenticated={isAuthenticated}>
+            <Rolecheck isAuthenticated={isAuthenticated} user={user} >
               <PharmacyDash_board />
             </Rolecheck>
           }
@@ -81,8 +76,8 @@ function App() {
         <Route
           path="AdminDash_board"
           element={
-            <Rolecheck isAuthenticated={isAuthenticated}>
-              <AdminDash_board />
+            <Rolecheck isAuthenticated={isAuthenticated} user={user} >
+              <AdminDash_board  user={user}/>
             </Rolecheck>
           }
         />

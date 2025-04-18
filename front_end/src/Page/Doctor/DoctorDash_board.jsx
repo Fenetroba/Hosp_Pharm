@@ -3,10 +3,12 @@ import Header from '@/components/Doctor/Header'
 import Sider from '@/components/Doctor/Sider'
 import React from 'react'
 
-const DoctorDash_board = () => {
+const DoctorDash_board = ({user}) => {
+  
   return (
     <div>
-      <Header/>
+      <Header user={user}/>
+    
       <Sider/>
       <Doctor_main/>
       

@@ -61,7 +61,9 @@
 
 .semicircle {
      position: relative;
-     background: #2c3e50;
+     background:linear-gradient(rgba(0, 0, 0, 0.24) ,rgba(71, 24, 173, 0.76)),url('../../assets/doctorscolabration.jpg') center;
+     background-size: cover;
+     background-position: center;
      height: 30vh;
    }
    
