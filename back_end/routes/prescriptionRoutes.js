@@ -1,12 +1,12 @@
 import express from 'express'
-import { CreatePrescription, DeletePrescription, GetAllPrescriptions, GetPrescriptionById, UpdatePrescription } from '../controllers/prescriptionController.js';
+import { CreatePrescription, DeletePrescription, fetch_byPatient_name, GetAllPrescriptions, UpdatePrescription } from '../controllers/prescriptionController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
 const router =express.Router();
 
 router.post('/create_prescription',authMiddleware,CreatePrescription) 
 router.get('/all_prescription',authMiddleware,GetAllPrescriptions)
-router.get('/single_prescription/:id',authMiddleware,GetPrescriptionById)
+router.get('/single_prescription/:patientName',authMiddleware,fetch_byPatient_name)
 router.put('/update_prescription/:id',authMiddleware,UpdatePrescription)
 router.delete('/delete_prescription/:id',authMiddleware,DeletePrescription)
 

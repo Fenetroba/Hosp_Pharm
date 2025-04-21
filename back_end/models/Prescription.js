@@ -38,7 +38,7 @@ const prescriptionSchema = new mongoose.Schema({
     trim: true
   },
 
-  status: {
+  status: {//this is for pharmacist to see the status of the prescription
     type: String,
     enum: ['Active', 'Completed', 'Cancelled'],
     default: 'Active'
@@ -47,7 +47,32 @@ const prescriptionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+
+  medications: [{
+    DrugName: {
+      type: String,
+      required: true,
+
+  },
+  dosage: {
+      type: String,
+      required: true,
+      trim: true
+  },
+  frequency: {
+      type: String,
+      required: true,
+      trim: true
+  },
+  duration: {
+      type: String,
+      required: true,
+      trim: true
+  },
+
+}] 
+ 
 }, {
   timestamps: true
 });

@@ -35,6 +35,8 @@ app.use('/api/prescription', PrescriptionRouter)
 
 
 
+
+
 app.listen(PORT, () => { 
   console.log(`Server is running on port ${PORT}`);
   dbconnect();

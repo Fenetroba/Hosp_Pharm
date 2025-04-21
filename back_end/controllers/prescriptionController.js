@@ -1,11 +1,11 @@
 import Prescription from "../models/Prescription.js";
 
-
  export const  CreatePrescription =async(req,res)=>{
- const {patientName,address,age,sex,date,doctorName,patientNo,status}=req.body;
+ const {patientName,address,age,sex,date,doctorName,patientNo,medications}=req.body;
  const createdBy=req.user.userIds
+
  try {
-     if(!patientName || !address || !age || !sex || !date || !doctorName || !patientNo || !status){
+     if(!patientName || !address || !age || !sex || !date || !doctorName || !patientNo){
           return res.status(400).json({succse:false,message:"the all field are required "})
      }
      const newPrescription = new Prescription({
@@ -16,9 +16,11 @@ import Prescription from "../models/Prescription.js";
           date,
           doctorName,
           patientNo,
-          status,
           createdBy,
+          medications
       });
+      
+      
       // Save the prescription to the database
       await newPrescription.save();
       return res.status(201).json({ success: true, message: "Prescription created successfully.", prescription: newPrescription });
@@ -46,22 +48,26 @@ export const GetAllPrescriptions = async (req, res) => {
          return res.status(500).json({ success: false, message: "An error occurred while retrieving prescriptions." });
      }
  };
- export const GetPrescriptionById = async(req,res)=>{
-      const {id}=req.params;
-      try {
-         const prescription = await Prescription.findById(id);
-         if(!prescription){
-            return res.status(404).json({success:false,message:"prescription not found"});
-         }
-         return res.status(200).json({success:true,prescription});
-         
+ export const fetch_byPatient_name = async (req, res) => {
+   try {
+     const { patientName } = req.params; // Get the name from the route parameters
 
-      } catch (error) {
-         console.error(error);
-         return res.status(500).json({success:false,message:"internal server error"});
-      }
-     
-      }
+     if (!patientName) {
+       return res.status(400).json({ message: "Patient name is required" });
+     }
+
+     const prescriptions = await Prescription.find({ patientName: new RegExp(patientName, 'i') });
+
+     if (prescriptions.length === 0) {
+       return res.status(404).json({ message: "No prescriptions found" });
+     }
+
+     res.status(200).json(prescriptions);
+   } catch (error) {
+     console.error("Error fetching prescriptions:", error);
+     res.status(500).json({ message: "Server error" });
+   }
+};
 export const UpdatePrescription = async(req,res)=>{
          const {id}=req.params;
          const {patientName,address,age,sex,date,doctorName,patientNo,status}=req.body;
@@ -102,3 +108,6 @@ export const DeletePrescription = async(req,res)=>{
       }
 
 }
+// export const fetch_byPatient_name=async(req,res)=>{
+
+// }
