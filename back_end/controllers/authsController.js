@@ -80,21 +80,6 @@ export const Login = async (req, res) => {
   }
 };
 
-// Get user profile
-// export const getUser = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user.userId).select("-password");
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-//     res.status(200).json(user);
-//   } catch (error) {
-//     console.error("Get user error:", error);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
-
-// Refresh token
 export const refreshToken = async (req, res) => {
   try {
     const { refreshToken } = req.cookies;

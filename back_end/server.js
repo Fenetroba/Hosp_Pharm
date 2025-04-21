@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 
 import User_RegisterRouter from './routes/userRoutes.js';
 import User_LoginRouter from './routes/authRoutes.js';
+import PrescriptionRouter from './routes/prescriptionRoutes.js';
 dotenv.config();
 const app = express();
 app.use(cors({
@@ -29,6 +30,7 @@ app.use(cookieParser());
 
 app.use('/api/user', User_RegisterRouter)
 app.use('/api/auth', User_LoginRouter)
+app.use('/api/prescription', PrescriptionRouter)
 
 
 
