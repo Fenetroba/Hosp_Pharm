@@ -68,7 +68,7 @@ const AdminHeader = () => {
 
   return (
     <header className="admin-header fixed top-0 w-full p-4 bg-white shadow-md z-50">
-      <ToastContainer />
+    
       <div className="max-w-7xl mx-auto">
         {/* Desktop Header */}
         <div className="hidden md:flex items-center justify-between">

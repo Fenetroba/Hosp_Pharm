@@ -5,18 +5,24 @@ const initialState= {
      loading: false,
      error: null,
  }
+
+ 
  export const create__Prescription = createAsyncThunk(
-     "/prescription/createPrescription",
-     async () => {
-       const response = await axios.post("/create_prescription",prescriptionData, {
+   "/prescription/create_prescription",
+   async (patientDetail) => {
+     try {
+       const response = await axios.post("/prescription/create_prescription", patientDetail, {
          withCredentials: true,
          headers: {
-           "cache-control": "no-cache, no-store, must-revalidate, proxy-revalidate",
+           "Cache-Control": "no-cache, no-store, must-revalidate, proxy-revalidate",
          },
        });
        return response.data; // Ensure you return the response data
+     } catch (error) {
+       throw new Error("Failed to create prescription: " + error.message);
      }
-   );
+   }
+ );
 
    export const FetchAll__prescription = createAsyncThunk(
      'prescription/get_all_priscription',
@@ -26,13 +32,13 @@ const initialState= {
          const response = await axios.get('/prescription/all_prescription', {
            withCredentials: true,
          });
+         
          return response.data; // Return user data
        } catch (error) {
          return rejectWithValue(error.response?.data || { message: 'Fetch failed.' });
        }
      }
    );
-
 
    export const Update__prescription= createAsyncThunk(
      'prescription/update_prescription',
@@ -77,7 +83,7 @@ const initialState= {
     }
  )
 const prescriptionSlice = createSlice({
-    name: "prescription",
+    name: "prescriptions",
     initialState,
 
    
@@ -90,11 +96,37 @@ const prescriptionSlice = createSlice({
 
 
     extraReducers: (builder) => {
-        builder.addCase(fetchPrescriptions.pending, (state) => {
-            state.loading = true;
-        });
-    },
-});
+      builder
+      .addCase(create__Prescription.pending, (state, action) => {
+       state.prescriptions = []; // Clear results on failure
+       state.loading=true
+     })
+      .addCase(create__Prescription.fulfilled, (state, action) => {
+       state.prescriptions=action.payload
+       console.log("created")
+       state.loading=false
+     })
+      .addCase(create__Prescription.rejected, (state, action) => {
+       state.prescriptions = []; // Clear results on failure
+       state.loading=false
+     })
+     .addCase(FetchAll__prescription.pending, (state) => {
+      state.loading = true; // Set loading to true
+      state.prescriptions = []; // Clear results when the request is pending
+    })
+    .addCase(FetchAll__prescription.fulfilled, (state, action) => {
+      state.prescriptions = action.payload.prescriptions; // Set prescriptions to the payload
+      console.log("Fetched prescriptions successfully");
+      state.loading = false; // Set loading to false on successful fetch
+    })
+    .addCase(FetchAll__prescription.rejected, (state) => {
+      state.prescriptions = []; // Clear results on failure
+      console.error("Failed to fetch prescriptions"); // Log the error
+      state.loading = false; // Set loading to false on failure
+    })
+    }
+  })
+
 
 export const { setPrescriptions } = prescriptionSlice.actions;
 export default prescriptionSlice.reducer;

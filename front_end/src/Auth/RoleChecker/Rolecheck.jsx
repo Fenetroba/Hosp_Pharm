@@ -2,14 +2,15 @@ import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
 
 const RoleChecker = ({ children, isAuthenticated,user}) => {
-console.log(user)
+console.log("user",user)
 
   const location = useLocation();
   const protectedRoutes = [
-    "/doctorDash_board",
+    "/DoctorDash_board",
     "/AdminDash_board",
     "/pharmaDash_board",
   ];
+  console.log(isAuthenticated)
     
   // Redirect unauthenticated users from protected routes
   if (!isAuthenticated) {
@@ -22,7 +23,7 @@ console.log(user)
   // Redirect authenticated users based on their roles
   if (isAuthenticated && user) {
     const roleRedirects = {
-      doctor: "/doctorDash_board",
+      doctor: "/DoctorDash_board",
       Pharma: "/pharmaDash_board",
       default: "/AdminDash_board",
     };

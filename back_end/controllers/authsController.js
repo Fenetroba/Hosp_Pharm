@@ -51,13 +51,17 @@ export const Login = async (req, res) => {
 
     // Input validation
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res.status(400).json({success:false, message: "Email and password are required" });
     }
 
     // Find user and validate password
     const user = await User.findOne({ email });
+
+    if(!user){
+      return res.status(404).json({success:false,message:"the user is not found"})
+    }
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({success:false, message: "Invalid credentials" });
     }
 
     // Generate tokens and set cookies
@@ -76,7 +80,7 @@ export const Login = async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({success:false, message: "Server error" });
   }
 };
 
@@ -114,7 +118,7 @@ export const logout = async (req, res) => {
   try {
     res.clearCookie("access_Token");
     res.clearCookie("refresh_Token");
-    res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ message: "Logged out successfully55555555555" });
   } catch (error) {
     console.error("Logout error:", error);
     res.status(500).json({ message: "Server error" });

@@ -21,7 +21,8 @@ import { useEffect, useState } from "react";
 import Settings from "./components/Admin/Settings";
 import Reports from "./components/Admin/Reports";
 import Users from "./components/Admin/Users";
-import { toast } from "react-toastify";
+
+import PrescriptionDetail from "./components/Doctor/PrescriptionDetail";
 
 function App() {
   const { isAuthenticated,user} = useSelector((state) => state.Auth);
@@ -61,10 +62,12 @@ function App() {
           element={
             <Rolecheck isAuthenticated={isAuthenticated} user={user} >
               <DoctorDash_board/>
-        
             </Rolecheck>
           }
         />
+        
+        <Route path="DoctorDash_board/detail" element={<PrescriptionDetail/>} />  
+        
         <Route
           path="PharmaDash_board"
           element={
