@@ -69,7 +69,7 @@ const initialState= {
        }
      }
    );
- export const fetch_prescription_byPatient_name=createAsyncThunk(
+ export const fetch_byPatient_name=createAsyncThunk(
     'prescription/fetch_prescription_byPatient_name',
     async (patient_name, { rejectWithValue }) => {
         try {
@@ -120,6 +120,20 @@ const prescriptionSlice = createSlice({
       state.loading = false; // Set loading to false on successful fetch
     })
     .addCase(FetchAll__prescription.rejected, (state) => {
+      state.prescriptions = []; // Clear results on failure
+      console.error("Failed to fetch prescriptions"); // Log the error
+      state.loading = false; // Set loading to false on failure
+    })
+     .addCase(fetch_byPatient_name.pending, (state) => {
+      state.loading = true; // Set loading to true
+      state.prescriptions = []; // Clear results when the request is pending
+    })
+    .addCase(fetch_byPatient_name.fulfilled, (state, action) => {
+      state.prescriptions = action.payload.prescriptions; // Set prescriptions to the payload
+      console.log("Fetched prescriptions successfully");
+      state.loading = false; // Set loading to false on successful fetch
+    })
+    .addCase(fetch_byPatient_name.rejected, (state) => {
       state.prescriptions = []; // Clear results on failure
       console.error("Failed to fetch prescriptions"); // Log the error
       state.loading = false; // Set loading to false on failure
