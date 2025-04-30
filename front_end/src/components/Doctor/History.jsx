@@ -27,24 +27,22 @@ const History = () => {
     setOpenPrescriptionId(openPrescriptionId === id ? null : id);
   };
 
-  
   return (
-    <div>
-      <div className="flex items-center space-x-20">
+    <div className="p-4">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-4">
         <select
           value={selectedPeriod}
           onChange={(e) => setSelectedPeriod(e.target.value)}
-          className="w-[50%] mt-2.5 ml-3 p-2 bg-blue-100"
+          className="w-full md:w-auto p-2 bg-blue-100 rounded-md"
         >
           <option value="Day">Day</option>
           <option value="Week">Week</option>
           <option value="Month">Month</option>
         </select>
-
-        <h1 className="text-[var(--six)]">History</h1>
+        <h1 className="text-[var(--six)] text-lg font-semibold mt-2 md:mt-0">History</h1>
       </div>
 
-      <Table className="text-amber-50 m-8">
+      <Table className="text-amber-50 m-2 md:m-8">
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
@@ -70,9 +68,9 @@ const History = () => {
               <TableCell>{prescription.patientNo}</TableCell>
               <TableCell>{prescription.sex}</TableCell>
               <TableCell className={`${
-                prescription.state === "Completed"
+                prescription.status === "Completed"
                   ? "bg-green-500 rounded-2xl text-black"
-                  : prescription.state === "Cancelled"
+                  : prescription.status === "Cancelled"
                   ? "text-red-500 rounded-2xl"
                   : "text-yellow-500 rounded-2xl"
               }`}>
@@ -84,8 +82,8 @@ const History = () => {
       </Table>
 
       {openPrescriptionId && (
-        <div>
-          <Table className="mt-8 bg-[var(--six)] text-black">
+        <div className="mt-4">
+          <Table className="bg-[var(--six)] text-black">
             <TableHeader>
               <TableRow>
                 <TableHead>Drug Name</TableHead>

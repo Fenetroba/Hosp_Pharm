@@ -38,14 +38,14 @@ const Search_user = () => {
   };
 
   return (
-    <div>
-      <div className="p-2 flex items-center space-x-1.5">
+    <div className="p-4">
+      <div className="flex items-center space-x-2 mb-4">
         <input
           type="text"
           value={search}
           onChange={handleChange}
           placeholder="Search by patient name"
-          className="bg-white border-0 outline-0 shadow-2xl rounded-2xl"
+          className="flex-grow p-2 border rounded-2xl"
         />
         <Search className="text-white w-10 h-10 bg-orange-400 p-2 rounded-[4px]" />
       </div>
@@ -71,18 +71,16 @@ const Search_user = () => {
               ))
             ) : (
               <TableRow>
-                 <img src={folde} alt="folder" className="w-30 h-30 ml-[60%]" />
+                <TableCell colSpan={3} className="text-center">
+                  <img src={folde} alt="No prescriptions" className="w-20 h-20 mx-auto" />
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      
 
         {selectedPrescriptionId && (
-          
- 
-
-<Table className="mt-8 bg-[var(--six)] text-black">
+          <Table className="mt-8 bg-[var(--six)] text-black">
             <TableHeader>
               <TableRow>
                 <TableHead>Drug Name</TableHead>
@@ -100,12 +98,11 @@ const Search_user = () => {
                     <TableCell>{medication.dosage}</TableCell>
                     <TableCell>{medication.frequency}</TableCell>
                     <TableCell>{medication.duration}</TableCell>
-                   
                   </TableRow>
                 ))}
             </TableBody>
           </Table>
-                 )}
+        )}
       </div>
     </div>
   );

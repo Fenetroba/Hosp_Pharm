@@ -23,6 +23,7 @@ import Reports from "./components/Admin/Reports";
 import Users from "./components/Admin/Users";
 
 import PrescriptionDetail from "./components/Doctor/PrescriptionDetail";
+import CRUD from "./components/Doctor/CRUD";
 
 function App() {
   const { isAuthenticated,user} = useSelector((state) => state.Auth);
@@ -67,6 +68,7 @@ function App() {
         />
         
         <Route path="DoctorDash_board/detail" element={<PrescriptionDetail/>} />  
+        <Route path="/DoctorDash_board/priscription" element={<CRUD/>} />  
         
         <Route
           path="PharmaDash_board"

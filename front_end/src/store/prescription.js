@@ -40,7 +40,7 @@ const initialState= {
      }
    );
 
-   export const Update__prescription= createAsyncThunk(
+   export const update__Prescription= createAsyncThunk(
      'prescription/update_prescription',
      async ({ PrescriptionId, prescription__Data }, { rejectWithValue }) => {
        try {
@@ -55,7 +55,7 @@ const initialState= {
      }
    );
 
-   export const Delete__prescription = createAsyncThunk(
+   export const delete__Prescription = createAsyncThunk(
      'prescription/delete_prescription',
      async (PrescriptionId, { rejectWithValue }) => {
        try {
