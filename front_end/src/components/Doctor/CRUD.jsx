@@ -1,5 +1,5 @@
 import React from 'react'
-import CRUD_prescription from './CRUD_prescription'
+import CRUD_prescription from './Creating_prescription'
 import Sider from './Sider'
 import CRUD_Functions from './CRUD_Functions'
 

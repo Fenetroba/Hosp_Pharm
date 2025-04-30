@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetch_byPatient_name } from "@/store/prescription";
+import { fetch_byPatient_name, delete__Prescription } from "@/store/prescription";
 import folde from '../../assets/folder.png';
-import { Search } from "lucide-react";
+import { Search, Edit, Trash2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -17,10 +17,12 @@ const Search_user = () => {
   const { prescriptions } = useSelector((state) => state.prescriptions);
   const [search, setSearch] = useState("");
   const [selectedPrescriptionId, setSelectedPrescriptionId] = useState(null);
+  const [refreshData, setRefreshData] = useState(false); // State to trigger re-fetching
 
   useEffect(() => {
     dispatch(fetch_byPatient_name()); // Fetch prescriptions when the component mounts
-  }, [dispatch]);
+    setRefreshData(false); // Reset refreshData after fetching
+  }, [dispatch, refreshData]);
 
   // Handle search input
   const handleChange = (event) => {
@@ -35,6 +37,21 @@ const Search_user = () => {
   // Handle row click to toggle medication display
   const handleRowClick = (id) => {
     setSelectedPrescriptionId(selectedPrescriptionId === id ? null : id);
+  };
+
+  // Handle update action
+  const handleUpdate = (prescriptionId, event) => {
+    event.stopPropagation(); // Prevent row click
+    console.log("Update prescription:", prescriptionId);
+    // Implement your update logic here
+  };
+
+  // Handle delete action
+  const handleDelete = async (prescriptionId, event) => {
+    event.stopPropagation(); // Prevent row click
+    console.log("Delete prescription:", prescriptionId);
+    await dispatch(delete__Prescription(prescriptionId));
+    setRefreshData(true); // Trigger re-fetching after deletion
   };
 
   return (
@@ -80,28 +97,33 @@ const Search_user = () => {
         </Table>
 
         {selectedPrescriptionId && (
-          <Table className="mt-8 bg-[var(--six)] text-black">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Drug Name</TableHead>
-                <TableHead>Dosage</TableHead>
-                <TableHead>Frequency</TableHead>
-                <TableHead>Duration</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredPrescriptions
-                .find(prescription => prescription._id === selectedPrescriptionId)
-                ?.medications.map((medication) => (
-                  <TableRow key={medication._id}>
-                    <TableCell>{medication.DrugName}</TableCell>
-                    <TableCell>{medication.dosage}</TableCell>
-                    <TableCell>{medication.frequency}</TableCell>
-                    <TableCell>{medication.duration}</TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
+          <div>
+            <Table className="mt-8 bg-[var(--six)] text-black">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Drug Name</TableHead>
+                  <TableHead>Dosage</TableHead>
+                  <TableHead>Frequency</TableHead>
+                  <TableHead>Duration</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredPrescriptions
+                  .find(prescription => prescription._id === selectedPrescriptionId)
+                  ?.medications.map((medication) => (
+                    <TableRow key={medication._id}>
+                      <TableCell>{medication.DrugName}</TableCell>
+                      <TableCell>{medication.dosage}</TableCell>
+                      <TableCell>{medication.frequency}</TableCell>
+                      <TableCell>{medication.duration}</TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+            <button onClick={(event) => handleDelete(selectedPrescriptionId, event)} className="block cursor-pointer px-4 py-2 text-red-600 hover:bg-gray-200 mt-1">
+              <Trash2 className="inline-block mr-2"/> Delete
+            </button>
+          </div>
         )}
       </div>
     </div>

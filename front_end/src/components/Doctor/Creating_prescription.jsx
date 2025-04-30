@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { create__Prescription } from "@/store/prescription"; // Ensure this import exists
 import CRUD_Functions from './CRUD_Functions'; // Import the CRUD_Functions component
 
-const CRUD_prescription = () => {
+const Creating_prescription = () => {
   const dispatch = useDispatch();
   const [showDetail, setShowDetail] = useState(false);
   const [patientDetail, setPatientDetail] = useState({
@@ -220,4 +220,4 @@ const CRUD_prescription = () => {
   );
 };
 
-export default CRUD_prescription;
+export default Creating_prescription;
