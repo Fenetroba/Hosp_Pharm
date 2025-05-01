@@ -9,19 +9,33 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const History = () => {
   const dispatch = useDispatch();
   const [openPrescriptionId, setOpenPrescriptionId] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("Day"); // Default selection
+  const [isLoading, setIsLoading] = useState(true);
 
   // Access prescriptions from the Redux store
-  const { prescriptions } = useSelector((state) => state.prescriptions);
+  const prescriptions = useSelector((state) => state.prescriptions.prescriptions);
+  console.log(prescriptions);
 
-  // Fetch all prescriptions when the component mounts
+  const fetchData = async () => { // Make fetchData async
+    setIsLoading(true);
+    await dispatch(FetchAll__prescription()); // Dispatch and wait for the data
+    setIsLoading(false);
+  };
   useEffect(() => {
-    dispatch(FetchAll__prescription());
+
+    fetchData();
   }, [dispatch]);
+
+  // Subscribe to changes in the prescriptions array
+  useEffect(() => {
+    fetchData(); // Re-fetch data when prescriptions change
+  }, [prescriptions]);
 
   const handleRowClick = (id) => {
     setOpenPrescriptionId(openPrescriptionId === id ? null : id);
@@ -29,6 +43,7 @@ const History = () => {
 
   return (
     <div className="p-4">
+      <ToastContainer /> {/* Add ToastContainer for notifications */}
       <div className="flex flex-col md:flex-row items-center justify-between mb-4">
         <select
           value={selectedPeriod}
@@ -55,29 +70,45 @@ const History = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {prescriptions.map((prescription) => (
-            <TableRow
-              key={prescription._id}
-              onClick={() => handleRowClick(prescription._id)}
-              className="cursor-pointer hover:bg-gray-700"
-            >
-              <TableCell className="font-medium">{prescription.patientName}</TableCell>
-              <TableCell>{prescription.address}</TableCell>
-              <TableCell>{prescription.age}</TableCell>
-              <TableCell>{new Date(prescription.createdAt).toLocaleDateString()}</TableCell>
-              <TableCell>{prescription.patientNo}</TableCell>
-              <TableCell>{prescription.sex}</TableCell>
-              <TableCell className={`${
-                prescription.status === "Completed"
-                  ? "bg-green-500 rounded-2xl text-black"
-                  : prescription.status === "Cancelled"
-                  ? "text-red-500 rounded-2xl"
-                  : "text-yellow-500 rounded-2xl"
-              }`}>
-                {prescription.status}
+          {isLoading ? (
+            <TableRow>
+              <TableCell colSpan={7} className="text-center">
+                Loading...
               </TableCell>
             </TableRow>
-          ))}
+          ) : Array.isArray(prescriptions) && prescriptions.length > 0 ? (
+            prescriptions.map((prescription) => (
+              <TableRow
+                key={prescription._id}
+                onClick={() => handleRowClick(prescription._id)}
+                className="cursor-pointer hover:bg-gray-700"
+              >
+                <TableCell className="font-medium">{prescription.patientName}</TableCell>
+                <TableCell>{prescription.address}</TableCell>
+                <TableCell>{prescription.age}</TableCell>
+                <TableCell>{new Date(prescription.createdAt).toLocaleDateString()}</TableCell>
+                <TableCell>{prescription.patientNo}</TableCell>
+                <TableCell>{prescription.sex}</TableCell>
+                <TableCell
+                  className={`${
+                    prescription.status === "Completed"
+                      ? "bg-green-500 rounded-2xl text-black"
+                      : prescription.status === "Cancelled"
+                      ? "text-red-500 rounded-2xl"
+                      : "text-yellow-500 rounded-2xl"
+                  }`}
+                >
+                  {prescription.status}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={7} className="text-center">
+                No prescriptions found.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
 
@@ -94,17 +125,18 @@ const History = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {prescriptions
-                .find((prescription) => prescription._id === openPrescriptionId)
-                ?.medications.map((medication) => (
-                  <TableRow key={medication._id}>
-                    <TableCell>{medication.DrugName}</TableCell>
-                    <TableCell>{medication.dosage}</TableCell>
-                    <TableCell>{medication.frequency}</TableCell>
-                    <TableCell>{medication.duration}</TableCell>
-                    <TableCell>{medication.notes}</TableCell>
-                  </TableRow>
-                ))}
+              {Array.isArray(prescriptions) &&
+                prescriptions
+                  .find((prescription) => prescription._id === openPrescriptionId)
+                  ?.medications.map((medication) => (
+                    <TableRow key={medication._id}>
+                      <TableCell>{medication.DrugName}</TableCell>
+                      <TableCell>{medication.dosage}</TableCell>
+                      <TableCell>{medication.frequency}</TableCell>
+                      <TableCell>{medication.duration}</TableCell>
+                      <TableCell>{medication.notes}</TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </div>

@@ -1,11 +1,12 @@
 import Prescription from "../models/Prescription.js";
 
  export const  CreatePrescription =async(req,res)=>{
- const {patientName,address,age,sex,date,doctorName,patientNo,medications}=req.body;
+ const {patientName,address,age,sex,date,doctorName,patientNo,medications,notes}=req.body;
  const createdBy=req.user.userIds
 
  try {
      if(!patientName || !address || !age || !sex || !date || !doctorName || !patientNo){
+        console.log("fall")
           return res.status(400).json({succse:false,message:"the all field are required "})
      }
      const newPrescription = new Prescription({
@@ -15,6 +16,7 @@ import Prescription from "../models/Prescription.js";
           sex,
           date,
           doctorName,
+          notes,
           patientNo,
           createdBy,
           medications

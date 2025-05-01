@@ -5,8 +5,7 @@ import { logoutUser } from "@/store/useSlice";
 import { useNavigate } from "react-router-dom";
 const Header = () => {
   const { user } = useSelector((state) => state.Auth);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
 
   const Logout = () => {
     dispatch(logoutUser()).then(navigate("/"));
@@ -32,12 +31,7 @@ const Header = () => {
           0
         </span>
       </button>
-      <button
-        onClick={Logout}
-        className="px-8 py-1 rounded-2xl bg-amber-300 flex space-x-2.5 cursor-pointer"
-      >
-        <span>Logout</span> <LogOut />
-      </button>
+    
       </div>
     </div>
   );

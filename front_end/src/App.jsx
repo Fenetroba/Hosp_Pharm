@@ -23,7 +23,7 @@ import Reports from "./components/Admin/Reports";
 import Users from "./components/Admin/Users";
 
 import PrescriptionDetail from "./components/Doctor/PrescriptionDetail";
-import CRUD from "./components/Doctor/CRUD";
+import CRUD from "./components/Doctor/Doctors_data";
 
 function App() {
   const { isAuthenticated,user} = useSelector((state) => state.Auth);
@@ -35,7 +35,7 @@ function App() {
   useEffect(() => {
     dispatch(CheckAuths());
     
-  }, [dispatch]);
+  }, []);
 
   // Show loading state while checking authentication
 

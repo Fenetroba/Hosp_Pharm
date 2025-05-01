@@ -10,10 +10,10 @@ const CRUD = () => {
       
 <div className="grid grid-cols-5 grid-rows-5 gap-4 mt-2">
     <div className="col-span-3 row-span-5">
-    <CRUD_prescription/>
+    
     </div>
     <div className="row-span-5  bg-[var(--one)]">
-    <CRUD_Functions/>
+
     </div>
     <div className="row-span-5 col-start-5  bg-[var(--one)]">3</div>
 </div>

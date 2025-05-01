@@ -5,10 +5,13 @@ import Search_user from "./Search_user";
 import History from "./History";
 import Create_priscription from "./Prescription Action/Create_priscription";
 import Creating_prescription from "./Creating_prescription";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { FetchAll__prescription } from "@/store/prescription";
 
 const PrescriptionDetail = () => {
   const [ofCreate,setCreate]=useState(false)
-  console.log(ofCreate)
+
   return (
     <section className="relative">
       <Sider />
@@ -22,7 +25,9 @@ const PrescriptionDetail = () => {
         <div className="col-span-1 md:col-span-2 row-span-3 md:col-start-4 bg-[var(--one)] h-[400px] md:h-[500px] overflow-auto text-black">
           <div >
          {ofCreate?<Creating_prescription />:
-         <div className="text-white"> Hi</div>
+         <div className="text-white"> 
+      
+         </div>
 
          }
 

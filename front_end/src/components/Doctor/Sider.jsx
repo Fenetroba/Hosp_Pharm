@@ -17,8 +17,8 @@ const Sider = () => {
       </div>
       <ul className={`flex flex-col gap-2 items-center justify-center h-[100px]  text-white mt-[300px] `}>
         <li className=" font-bold cursor-pointer hover:t"><Link to='/DoctorDash_board'>{toggle?"Dashboard":<LayoutDashboard />} </Link></li>
-        <li className=" font-bold cursor-pointer hover:t"><Link to='/DoctorDash_board/priscription'>{toggle?"Dashboard":<CreativeCommonsIcon />} </Link></li>
-        <li className="font-bold cursor-pointer hover:t"><Link to="/DoctorDash_board/detail">{toggle?"prescription":<User/>}</Link> </li>
+        <li className=" font-bold cursor-pointer hover:t"><Link to='/DoctorDash_board/priscription'>{toggle?"Dashboard":<User/>} </Link></li>
+        <li className="font-bold cursor-pointer hover:t"><Link to="/DoctorDash_board/detail">{toggle?"prescription":<CreativeCommonsIcon />}</Link> </li>
         </ul>
 
 

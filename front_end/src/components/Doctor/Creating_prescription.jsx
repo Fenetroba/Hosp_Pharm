@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { create__Prescription } from "@/store/prescription"; // Ensure this import exists
 import CRUD_Functions from './CRUD_Functions'; // Import the CRUD_Functions component
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Creating_prescription = () => {
   const dispatch = useDispatch();
@@ -13,31 +15,110 @@ const Creating_prescription = () => {
     age: 0,
     sex: "Male",
     patientNo: "",
-    drugName: "",
+    date: new Date().toISOString().split('T')[0], // Initialize date to today's date in YYYY-MM-DD format
+    status: "pending", // Initialize status
+    doctorName: "",
+    medications: [],
+  });
+
+  const [newMedication, setNewMedication] = useState({
+    DrugName: "",
     dosage: "",
     frequency: "",
     duration: "",
+    notes: "", // Add notes field
   });
 
-  const CreatePrescription = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    dispatch(create__Prescription(patientDetail));
-    console.log(patientDetail);
-    // Reset patient details after creating prescription
-    setPatientDetail({
-      patientName: "",
-      address: "",
-      age: 0,
-      sex: "Male",
-      patientNo: "",
-      drugName: "",
-      dosage: "",
-      frequency: "",
-      duration: "",
+  const [seePrescription, setSeePrescription] = useState(false);
+
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const validateForm = () => {
+    const errors = {};
+    if (!patientDetail.patientName) {
+      errors.patientName = "Patient Name is required";
+    }
+    if (!patientDetail.address) {
+      errors.address = "Address is required";
+    }
+    if (patientDetail.age <= 0) {
+      errors.age = "Age must be greater than 0";
+    }
+    if (!patientDetail.patientNo) {
+      errors.patientNo = "Patient No is required";
+    }
+    if (!patientDetail.date) {
+      errors.date = "Date is required";
+    }
+    if (!patientDetail.doctorName) {
+      errors.doctorName = "Doctor Name is required";
+    }
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleAddMedication = () => {
+    setPatientDetail((prevState) => {
+      const updatedMedications = [...prevState.medications, newMedication];
+      // Reset newMedication *after* updating patientDetail
+      const newState = {
+        ...prevState,
+        medications: updatedMedications,
+      };
+      setNewMedication({
+        DrugName: "",
+        dosage: "",
+        frequency: "",
+        duration: "",
+        notes: "", // Reset notes as well
+      });
+      return newState;
     });
   };
 
-  const [seePrescription, setSeePrescription] = useState(false);
+  const CreatePrescription = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
+    if (validateForm()) {
+      try {
+        await dispatch(create__Prescription(patientDetail)); // Await the action
+        console.log(patientDetail);
+        // Reset patient details after creating prescription
+        setPatientDetail({
+          patientName: "",
+          address: "",
+          age: 0,
+          sex: "Male",
+          patientNo: "",
+          date: new Date().toISOString().split('T')[0], // Reset date to today's date
+          status: "pending", // Reset status
+          doctorName: "",
+          medications: [],
+        });
+        setSeePrescription(false); // Hide the prescription form after submission
+        setValidationErrors({}); // Clear validation errors
+        toast.success('Prescription created successfully!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }); // Show success notification
+      } catch (error) {
+        toast.error('Failed to create prescription.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }); // Show error notification
+      }
+    }
+  };
 
   return (
     <motion.div
@@ -47,12 +128,13 @@ const Creating_prescription = () => {
       transition={{ duration: 0.9 }}
       className="relative  bg-[var(--one)] flex flex-col space-y-4 p-5"
     >
+      <ToastContainer /> {/* Add ToastContainer for notifications */}
       <CRUD_Functions /> {/* Add the CRUD_Functions component here */}
 
       <div className="flex flex-col gap-4 bg-[var(--six)] p-4 rounded-md">
         <label htmlFor="patientName">Patient Name</label>
         <input
-          className="border-2 bg-blue-100 rounded-md p-2"
+          className={`border-2 bg-blue-100 rounded-md p-2 ${validationErrors.patientName ? 'border-red-500' : ''}`}
           type="text"
           id="patientName"
           name="patientName"
@@ -64,10 +146,11 @@ const Creating_prescription = () => {
             })
           }
         />
+        {validationErrors.patientName && <p className="text-red-500">{validationErrors.patientName}</p>}
 
         <label htmlFor="address">Address</label>
         <input
-          className="border-2 bg-blue-100 rounded-md p-2"
+          className={`border-2 bg-blue-100 rounded-md p-2 ${validationErrors.address ? 'border-red-500' : ''}`}
           type="text"
           id="address"
           name="address"
@@ -79,10 +162,11 @@ const Creating_prescription = () => {
             })
           }
         />
+        {validationErrors.address && <p className="text-red-500">{validationErrors.address}</p>}
 
         <label htmlFor="age">Age</label>
         <input
-          className="border-2 bg-blue-100 rounded-md p-2"
+          className={`border-2 bg-blue-100 rounded-md p-2 ${validationErrors.age ? 'border-red-500' : ''}`}
           type="number"
           id="age"
           name="age"
@@ -94,6 +178,7 @@ const Creating_prescription = () => {
             })
           }
         />
+        {validationErrors.age && <p className="text-red-500">{validationErrors.age}</p>}
 
         <div className="flex flex-row gap-2 justify-center items-center">
           <label htmlFor="male">Male</label>
@@ -128,7 +213,7 @@ const Creating_prescription = () => {
 
         <label htmlFor="patientNo">Patient No</label>
         <input
-          className="border-2 bg-blue-100 rounded-md p-2"
+          className={`border-2 bg-blue-100 rounded-md p-2 ${validationErrors.patientNo ? 'border-red-500' : ''}`}
           type="text"
           id="patientNo"
           name="patientNo"
@@ -140,76 +225,135 @@ const Creating_prescription = () => {
             })
           }
         />
+        {validationErrors.patientNo && <p className="text-red-500">{validationErrors.patientNo}</p>}
+
+        <label htmlFor="date">Date</label>
+        <input
+          className={`border-2 bg-blue-100 rounded-md p-2 ${validationErrors.date ? 'border-red-500' : ''}`}
+          type="date" // Use type="date" for date input
+          id="date"
+          name="date"
+          value={patientDetail.date} // Use the date string directly
+          onChange={(e) =>
+            setPatientDetail({
+              ...patientDetail,
+              date: e.target.value, // Store the date string
+            })
+          }
+        />
+        {validationErrors.date && <p className="text-red-500">{validationErrors.date}</p>}
+
+        <label htmlFor="doctorName">Doctor Name</label>
+        <input
+          className={`border-2 bg-blue-100 rounded-md p-2 ${validationErrors.doctorName ? 'border-red-500' : ''}`}
+          type="text"
+          id="doctorName"
+          name="doctorName"
+          value={patientDetail.doctorName}
+          onChange={(e) =>
+            setPatientDetail({
+              ...patientDetail,
+              doctorName: e.target.value,
+            })
+          }
+        />
+        {validationErrors.doctorName && <p className="text-red-500">{validationErrors.doctorName}</p>}
+
         <button
           className="bg-blue-950 text-white px-4 py-2 rounded-md cursor-pointer hover:scale-105 transition-all duration-300"
           onClick={() => setSeePrescription(!seePrescription)}
           type="button"
         >
-          Add Prescription
+          {seePrescription ? "Hide Prescription" : "Add Prescription"}
         </button>
       </div>
 
       {seePrescription && (
         <div className="flex flex-col gap-4 bg-[var(--six)] p-4 rounded-md mt-4">
+          {/* Medication Input Fields */}
           <label htmlFor="drugName">Drug Name</label>
           <input
             className="border-2 bg-blue-100 rounded-md p-2"
             type="text"
             id="drugName"
             name="drugName"
-            value={patientDetail.drugName}
+            value={newMedication.DrugName}
             onChange={(e) =>
-              setPatientDetail({
-                ...patientDetail,
-                drugName: e.target.value,
+              setNewMedication({
+                ...newMedication,
+                DrugName: e.target.value,
               })
             }
           />
+
           <label htmlFor="dosage">Dosage</label>
           <input
             className="border-2 bg-blue-100 rounded-md p-2"
             type="text"
             id="dosage"
             name="dosage"
-            value={patientDetail.dosage}
+            value={newMedication.dosage}
             onChange={(e) =>
-              setPatientDetail({
-                ...patientDetail,
+              setNewMedication({
+                ...newMedication,
                 dosage: e.target.value,
               })
             }
           />
+
           <label htmlFor="frequency">Frequency</label>
           <input
             className="border-2 bg-blue-100 rounded-md p-2"
             type="text"
             id="frequency"
             name="frequency"
-            value={patientDetail.frequency}
+            value={newMedication.frequency}
             onChange={(e) =>
-              setPatientDetail({
-                ...patientDetail,
+              setNewMedication({
+                ...newMedication,
                 frequency: e.target.value,
               })
             }
           />
+
           <label htmlFor="duration">Duration</label>
           <input
             className="border-2 bg-blue-100 rounded-md p-2"
             type="text"
             id="duration"
             name="duration"
-            value={patientDetail.duration}
+            value={newMedication.duration}
             onChange={(e) =>
-              setPatientDetail({
-                ...patientDetail,
+              setNewMedication({
+                ...newMedication,
                 duration: e.target.value,
               })
             }
           />
 
+          <label htmlFor="notes">Notes</label>
+          <textarea
+            className="border-2 bg-blue-100 rounded-md p-2"
+            id="notes"
+            name="notes"
+            value={newMedication.notes}
+            onChange={(e) =>
+              setNewMedication({
+                ...newMedication,
+                notes: e.target.value,
+              })
+            }
+          />
+
           <button
-            className="bg-[var(--twoP)] text-white px-4 py-2 rounded-md cursor-pointer hover:scale-105 transition-all duration-300"
+            className="bg-green-500 text-white px-4 py-2 rounded-md cursor-pointer hover:scale-105 transition-all duration-300"
+            onClick={handleAddMedication}
+          >
+            Add Medication
+          </button>
+
+          <button
+            className="bg-[var(--twoP)] w-[50%] text-white px-4 py-2 rounded-md cursor-pointer hover:scale-105 transition-all duration-300"
             onClick={CreatePrescription}
           >
             Create Prescription

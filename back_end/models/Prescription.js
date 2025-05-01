@@ -26,18 +26,12 @@ const prescriptionSchema = new mongoose.Schema({
     required: [true, 'Date is required'],
     default: Date.now
   },
-  doctorName: {
-    type: String,
-    required: [true, 'Doctor name is required'],
-    trim: true
-  },
   patientNo: {
     type: String,
     required: [true, 'Patient number is required'],
     unique: true,
     trim: true
   },
-
   status: {//this is for pharmacist to see the status of the prescription
     type: String,
     enum: ['pending', 'Completed', 'Cancelled'],
@@ -70,6 +64,10 @@ const prescriptionSchema = new mongoose.Schema({
       required: true,
       trim: true
   },
+  notes:{
+    type: String,
+    trim: true
+  } 
 
 }] 
  
