@@ -101,6 +101,17 @@ const userSlice = createSlice({
       .addCase(FetchAllUsers.rejected, (state, action) => {
         state.UsersList = []; // Clear results on failure
         state.loading=false
+      })
+      .addCase(UpdateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null; // Clear previous errors
+      })
+      .addCase(UpdateUser.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(UpdateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message; // Store error message
       });
   },
 });

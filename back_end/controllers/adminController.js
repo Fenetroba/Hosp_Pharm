@@ -95,25 +95,41 @@ export const getByRole = async (req, res) => {
 };
 
 // Update a user
+
+
+
 export const updateUser = async (req, res) => {
   try {
     const userId = req.params.id; // Get the user ID from the request parameters
-    const updatedData = req.body; // Get the updated data from the request body
+    const { oldPassword, newPassword, name, email } = req.body; // Get the required fields from the request body
 
-    // Update the user and return the updated document
-    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
-      new: true,
-      runValidators: true, // Ensures validation during update
-    });
-
-    if (!updatedUser) {
+    // Retrieve the user from the database
+    const user = await User.findById(userId);
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(updatedUser); // Return the updated user data
+    // Check if the old password matches
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Old password is incorrect" });
+    }
+
+    // Update the user's data only if provided
+    if (newPassword) {
+      user.password = await bcrypt.hash(newPassword, 10); // Hash the new password
+    }
+    user.name = name || user.name; // Update name if provided
+    user.email = email || user.email; // Update email if provided
+
+    await user.save(); // Save the updated user data
+
+    res.status(200).json({ message: "User updated successfully" });
   } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ message: "Server error" });
+    // Check if error is defined and has a message property
+    const errorMessage = error?.message || "An unexpected error occurred";
+    console.error("Error updating user:", errorMessage);
+    res.status(500).json({ message: "Server error", error: errorMessage });
   }
 };
 // Delete a user

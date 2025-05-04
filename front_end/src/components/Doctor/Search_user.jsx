@@ -82,7 +82,7 @@ const handleDelete = async (prescriptionId, event) => {
           value={search}
           onChange={handleChange}
           placeholder="Search by patient name"
-          className="flex-grow p-2 border rounded-2xl"
+          className="flex-grow p-2 border rounded-2xl text-white"
         />
         <Search className="text-white w-10 h-10 bg-orange-400 p-2 rounded-[4px]" />
       </div>

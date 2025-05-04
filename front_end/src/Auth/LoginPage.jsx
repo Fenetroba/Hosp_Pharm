@@ -19,18 +19,16 @@ const LoginModal = ({ isOpen, onClose }) => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
-
+  
     try {
       // Dispatch the login action and wait for the result
-      const resultAction = await dispatch(loginUser(loginData));
-
-      // Check if the action was fulfilled
+      const resultAction = await dispatch(loginUser(loginData)); // Use await here
+  
       if (loginUser.fulfilled.match(resultAction)) {
-        const { user } = resultAction.payload; // Assuming user is in the payload
-        toast.success("Login successful"); // Ensure this is a string
-
+        // Check if the action was fulfilled
+        toast.success("User logged in successfully!");
         onClose(); // Close the modal on successful login
-
+  
         // Redirect based on user role
         const redirectPath = {
           doctor: "/doctorDash_board",
@@ -39,13 +37,13 @@ const LoginModal = ({ isOpen, onClose }) => {
         }[user?.role] || "/";
         navigate(redirectPath);
       } else {
-        // Show an error toast if login was unsuccessful
-        toast.error("Please try again"); // Ensure this is a string
+        // Handle rejected action
+        toast.error(resultAction.error.message || "Login failed. Please try again.");
       }
     } catch (error) {
       // Enhanced error handling
       const errorMessage = error.response?.data?.message || error.message || "Login failed. Please try again.";
-      toast.error(errorMessage); // Ensure this is a string
+    
     }
   };
 

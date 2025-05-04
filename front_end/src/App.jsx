@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import Settings from "./components/Admin/Settings";
 import Reports from "./components/Admin/Reports";
 import Users from "./components/Admin/Users";
+import { Toaster } from "@/components/ui/sonner";
 
 import PrescriptionDetail from "./components/Doctor/PrescriptionDetail";
 import CRUD from "./components/Doctor/Doctors_data";
@@ -41,6 +42,8 @@ function App() {
 
   return (
     <div>
+      <Toaster />
+    
       <Routes>
         <Route
           path="/"
@@ -67,8 +70,8 @@ function App() {
           }
         />
         
-        <Route path="DoctorDash_board/detail" element={<PrescriptionDetail/>} />  
-        <Route path="/DoctorDash_board/priscription" element={<CRUD/>} />  
+        <Route path="DoctorDash_board/detail" element={<PrescriptionDetail user={user} />} />  
+        <Route path="/DoctorDash_board/priscription" element={<CRUD user={user}/>} />  
         
         <Route
           path="PharmaDash_board"

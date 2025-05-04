@@ -19,7 +19,12 @@ const userSchema = new mongoose.Schema({
      type:String,
      enum:["Admin","doctor","Pharma"],
      required:true,
- }
+ },
+ date: {
+  type: Date,
+  required: [true, 'Date is required'],
+  default: Date.now
+},
 });
 const User = mongoose.model("User", userSchema);
 export default User;

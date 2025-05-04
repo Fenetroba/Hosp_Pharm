@@ -12,9 +12,9 @@ const Header = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-[var(--six)] shadow-md flex items-center justify-around min-h-[65px] z-20">
+    <div className="fixed top-0 -left-6 w-full bg-[var(--six)] shadow-md flex items-center justify-around min-h-[65px] z-20">
       <div>
-        <h1 className="sm:text-3xl font-bold">Share</h1>
+        <h1 className="sm:text-3xl font-bold">Hospo<span className="text-[var(--twoP)]">Pharma</span></h1>
       </div>
       <div className="header-title">
         <h1 className="text-black">

@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { create__Prescription } from "@/store/prescription"; // Ensure this import exists
 import CRUD_Functions from './CRUD_Functions'; // Import the CRUD_Functions component
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner";
 import 'react-toastify/dist/ReactToastify.css';
 
-const Creating_prescription = () => {
+const Creating_prescription = ({user}) => {
+
   const dispatch = useDispatch();
   const [showDetail, setShowDetail] = useState(false);
   const [patientDetail, setPatientDetail] = useState({
@@ -17,7 +19,7 @@ const Creating_prescription = () => {
     patientNo: "",
     date: new Date().toISOString().split('T')[0], // Initialize date to today's date in YYYY-MM-DD format
     status: "pending", // Initialize status
-    doctorName: "",
+    doctorName: user.username,
     medications: [],
   });
 
@@ -78,6 +80,7 @@ const Creating_prescription = () => {
 
   const CreatePrescription = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
+    toast("Prescription is Created")
 
     if (validateForm()) {
       try {
@@ -92,7 +95,7 @@ const Creating_prescription = () => {
           patientNo: "",
           date: new Date().toISOString().split('T')[0], // Reset date to today's date
           status: "pending", // Reset status
-          doctorName: "",
+         
           medications: [],
         });
         setSeePrescription(false); // Hide the prescription form after submission
@@ -128,8 +131,9 @@ const Creating_prescription = () => {
       transition={{ duration: 0.9 }}
       className="relative  bg-[var(--one)] flex flex-col space-y-4 p-5"
     >
-      <ToastContainer /> {/* Add ToastContainer for notifications */}
-      <CRUD_Functions /> {/* Add the CRUD_Functions component here */}
+
+     <Toaster/>
+      <CRUD_Functions /> 
 
       <div className="flex flex-col gap-4 bg-[var(--six)] p-4 rounded-md">
         <label htmlFor="patientName">Patient Name</label>
@@ -245,7 +249,7 @@ const Creating_prescription = () => {
 
         <label htmlFor="doctorName">Doctor Name</label>
         <input
-          className={`border-2 bg-blue-100 rounded-md p-2 ${validationErrors.doctorName ? 'border-red-500' : ''}`}
+          className={`border-2 bg-blue-100 rounded-md disabled p-2 ${validationErrors.doctorName ? 'border-red-500' : ''}`}
           type="text"
           id="doctorName"
           name="doctorName"
@@ -256,6 +260,7 @@ const Creating_prescription = () => {
               doctorName: e.target.value,
             })
           }
+          disabled
         />
         {validationErrors.doctorName && <p className="text-red-500">{validationErrors.doctorName}</p>}
 
