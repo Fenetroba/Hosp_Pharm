@@ -6,6 +6,11 @@ const prescriptionSchema = new mongoose.Schema({
     required: [true, 'Patient name is required'],
     trim: true
   },
+  doctorName: {
+    type: String,
+    required: [true, 'Doctor name is required'],
+    trim: true
+  },
   address: {
     type: String,
     required: [true, 'Address is required'],

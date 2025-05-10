@@ -1,7 +1,7 @@
 import Prescription from "../models/Prescription.js";
 
  export const  CreatePrescription =async(req,res)=>{
- const {patientName,address,age,sex,date,doctorName,patientNo,medications,notes}=req.body;
+ const {patientName,address,age,sex,date ,patientNo,medications,notes,doctorName}=req.body;
  const createdBy=req.user.userIds
 
  try {

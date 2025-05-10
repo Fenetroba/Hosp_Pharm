@@ -2,7 +2,7 @@ import React from "react";
 import { LogOut, Pill } from "lucide-react";
 import { logoutUser } from "@/store/useSlice";
 import { useDispatch } from "react-redux";
-
+import ParmacyLogo from '../../assets/PharmacyLogo.jpg'
 const Header = () => {
   const dispatch=useDispatch()
   const Logout=()=>{
@@ -12,9 +12,9 @@ const Header = () => {
    }
   return (
     <div className="fixed top-0 left-0 w-full bg-[var(--sixP)] shadow-md flex items-center justify-around min-h-[65px] z-20">
-      <div>
-        <h1 className="text-3xl font-bold">Share</h1>
-      </div>
+      
+        <img src={ParmacyLogo} alt="ParmacyLogo" className="w-[60px]"/>
+   
       <div className="header-title">
         <h1 className="text-black">
           {" "}
@@ -23,7 +23,7 @@ const Header = () => {
             <span className="text-[var(--fiveP)] w-3.5"> 
               <Pill />
             </span>
-            <span>Pharmacyst Dashboard</span>
+            <span className="sm:text-3xl max-sm:text-[14px]">Pharmacyst Dashboard</span>
           </span>
         </h1>
       </div>

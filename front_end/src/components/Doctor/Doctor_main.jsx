@@ -17,7 +17,7 @@ const Doctor_main = () => {
     const [showProfile, setShowProfile] = useState(false);
 
     return (
-        <div style={{ margin: "100px 50px 50px 100px" }}>
+        <div style={{ margin: "80px 20px 50px 70px" }}>
             <button
                 className="bg-blue-950 text-white px-4 py-2 rounded-md flex items-center gap-2 cursor-pointer"
                 onClick={() => setShowProfile(!showProfile)}
@@ -55,9 +55,9 @@ const Doctor_main = () => {
             </AnimatePresence>
 
             <div className="grid grid-cols-1 sm:grid-cols-5 grid-rows-5 gap-4"> {/* Responsive Grid */}
-                <div className="row-span-5 bg-[var(--one)]">1</div>
+                <div className="row-span-5 bg-[var(--one)] ">1</div>
                 <div className="col-span-1 sm:col-span-4 row-span-4 bg-[var(--one)]">
-                  <img src={doc} alt="doc" className="w-[50%] p-2.5" />
+                  <img src={doc} alt="doc" className="w-[50%] p-2.5 " />
                 </div>
                 <div className="col-span-1 sm:col-span-4 col-start-1 sm:col-start-2 row-start-5  bg-[var(--one)]">
                     5

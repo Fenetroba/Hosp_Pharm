@@ -23,6 +23,7 @@ const Creating_prescription = ({user}) => {
     medications: [],
   });
 
+
   const [newMedication, setNewMedication] = useState({
     DrugName: "",
     dosage: "",

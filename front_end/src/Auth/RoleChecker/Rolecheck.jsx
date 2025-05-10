@@ -8,7 +8,7 @@ console.log("user",user)
   const protectedRoutes = [
     "/DoctorDash_board",
     "/AdminDash_board",
-    "/pharmaDash_board",
+    "/pharmacist",
   ];
   console.log(isAuthenticated)
     
@@ -24,7 +24,7 @@ console.log("user",user)
   if (isAuthenticated && user) {
     const roleRedirects = {
       doctor: "/DoctorDash_board",
-      Pharma: "/pharmaDash_board",
+      Pharma: "/pharmacist",
       default: "/AdminDash_board",
     };
 

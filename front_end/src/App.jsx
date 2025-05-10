@@ -25,6 +25,8 @@ import { Toaster } from "@/components/ui/sonner";
 
 import PrescriptionDetail from "./components/Doctor/PrescriptionDetail";
 import CRUD from "./components/Doctor/Doctors_data";
+import User from "./components/Pharmasist/User";
+import History from "./components/Pharmasist/History";
 
 function App() {
   const { isAuthenticated,user} = useSelector((state) => state.Auth);
@@ -74,13 +76,17 @@ function App() {
         <Route path="/DoctorDash_board/priscription" element={<CRUD user={user}/>} />  
         
         <Route
-          path="PharmaDash_board"
+          path="pharmacist"
           element={
             <Rolecheck isAuthenticated={isAuthenticated} user={user} >
-              <PharmacyDash_board />
+              <PharmacyDash_board/>
             </Rolecheck>
           }
         />
+        <Route path="/pharmacist/user" element={<User/>} />
+        <Route path="/pharmacist/history" element={<History/>} />
+
+       
         <Route
           path="AdminDash_board"
           element={
