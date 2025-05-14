@@ -11,12 +11,12 @@ import Display_History from "./Display_History";
 
 const History__Details = () => {
   return (
-    <div className="absolute top-20 left-16 right-5 bg-[var(--sixP)] ">
-      <div className="flex gap-2.5 justify-center items-center">
+    <div className="absolute top-20 left-16 right-5 bg-[var(--sixP)]">
+      <div className="flex justify-center items-center m-2.5">
         <input type="text" placeholder="Search" />
-        <Search />
+        <Search className="text-white bg-black w-15 h-11 rounded-2xl" />
       </div>
-      <div className="flex mt-5 space-x-2.5">
+      <div className="flex mt-5 space-x-2.5 ml-2">
       <Select>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Date" />

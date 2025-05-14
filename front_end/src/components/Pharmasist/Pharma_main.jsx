@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import FrontSide from "./FrontSide";
 import NotificationPharma from "./NotificationPharma";
 import { Mail, User2Icon } from "lucide-react";
+import Daily_report from "./Daily_report";
 
 const Pharma_main = () => {
   const { user } = useSelector((state) => state.Auth);
@@ -28,7 +29,7 @@ const Pharma_main = () => {
           <FrontSide />
         </div>
         <div className="col-span-1 sm:col-span-4 col-start-1 sm:col-start-2 max:sm-row-start-2   bg-[var(--oneP)]">
-          5
+         <Daily_report/>
         </div>
       </div>
     </div>

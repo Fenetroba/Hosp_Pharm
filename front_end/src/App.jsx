@@ -83,8 +83,8 @@ function App() {
             </Rolecheck>
           }
         />
-        <Route path="/pharmacist/user" element={<User/>} />
-        <Route path="/pharmacist/history" element={<History/>} />
+        <Route path="/pharmacist/user" element={<User user={user}/>} />
+        <Route path="/pharmacist/history" element={<History />} />
 
        
         <Route
