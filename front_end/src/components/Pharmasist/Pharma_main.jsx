@@ -8,28 +8,39 @@ import Daily_report from "./Daily_report";
 const Pharma_main = () => {
   const { user } = useSelector((state) => state.Auth);
   return (
-    <div style={{ margin: "90px 20px 50px 60px" }}>
-      <div className="header-profile bg-[var(--fiveP)] p-4 mb-1 text-center ">
-        <p className="flex space-x-1">
-          <span className="text-2xl text-blue-950 font-bold ">
-            <User2Icon />{" "}
+    <div className="p-4 mt-20">
+      {/* Profile Header */}
+      <div className="header-profile bg-[var(--fiveP)] p-4 mb-4 rounded-lg shadow-sm">
+        <p className="flex items-center justify-center space-x-2">
+          <span className="text-2xl text-blue-950">
+            <User2Icon />
           </span>
-          <span> {user?.username || user?.name}</span>
+          <span className="text-lg font-semibold">{user?.username || user?.name}</span>
         </p>
-        <div className="mt-2 flex  space-x-1">
-          <Mail /> <span>{user?.useremail || user?.email}</span>
+        <div className="mt-2 flex items-center justify-center space-x-2">
+          <Mail className="w-5 h-5" />
+          <span>{user?.useremail || user?.email}</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-5 grid-rows-5 gap-2">
-        <div className="row-span-5 bg-[var(--oneP)]">
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+        {/* Notifications Sidebar */}
+        <div className="lg:col-span-1 bg-[var(--oneP)] rounded-lg shadow-sm h-[calc(100vh-250px)] overflow-y-auto">
           <NotificationPharma />
         </div>
-        <div className="col-span-1 sm:col-span-4 row-span-4 bg-[var(--oneP)]">
-          <FrontSide />
-        </div>
-        <div className="col-span-1 sm:col-span-4 col-start-1 sm:col-start-2 max:sm-row-start-2   bg-[var(--oneP)]">
-         <Daily_report/>
+
+        {/* Main Content Area */}
+        <div className="lg:col-span-4 space-y-4">
+          {/* Front Side Section */}
+          <div className="bg-[var(--oneP)] rounded-lg shadow-sm min-h-[400px]">
+            <FrontSide />
+          </div>
+
+          {/* Daily Report Section */}
+          <div className="bg-[var(--oneP)] rounded-lg shadow-sm min-h-[400px]">
+            <Daily_report />
+          </div>
         </div>
       </div>
     </div>

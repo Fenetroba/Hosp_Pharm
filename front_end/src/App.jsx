@@ -27,6 +27,7 @@ import PrescriptionDetail from "./components/Doctor/PrescriptionDetail";
 import CRUD from "./components/Doctor/Doctors_data";
 import User from "./components/Pharmasist/User";
 import History from "./components/Pharmasist/History";
+import FAQ from "./Layers/FAQ";
 
 function App() {
   const { isAuthenticated,user} = useSelector((state) => state.Auth);
@@ -58,6 +59,7 @@ function App() {
               <HospiPharmColla />
               <AboutUs />
               <Testimonials />
+              <FAQ/>
               <Contact />
               <Footer />
             </Rolecheck>

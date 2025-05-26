@@ -24,7 +24,7 @@ const testimonialsData = [
 
 const Testimonials = () => {
     return (
-        <div className="testimonials">
+        <div className="testimonials" id="Testimony">
             <h2 className="fade-in">What Our Patients Say</h2>
             <div className="testimonials-list fade-in">
                 {testimonialsData.map((testimonial) => (

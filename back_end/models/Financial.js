@@ -14,3 +14,5 @@ const Releted_finance=new mongoose.Schema({
           default: Date.now
         },
 })
+const Finance=new mongoose.model("Financial",Releted_finance)
+export default Finance;

@@ -25,8 +25,8 @@ const Header = () => {
                 <div className="flex justify-between items-center w-full">
                     {/* Logo */}
                     <div className="flex-shrink-0">
-                        <a href="/" className="text-2xl font-bold text-blue-950">
-                            Hospi<span className="text-blue-600">Pharma</span>
+                        <a href="/" className="text-2xl font-bold text-[var(--three)]">
+                            Hospi<span className="text-[var(--threeP)]">Pharma</span>
                         </a>
                     </div>
 
@@ -48,27 +48,27 @@ const Header = () => {
                     <nav className="hidden md:flex items-center space-x-8">
                         <ul className="flex space-x-8 ">
                             <li>
-                                <a href="/Testimony" className="text-gray-700 hover:text-blue-600 transition-colors">
+                                <a href="#Testimony" className="text-gray-700 hover:text-blue-600 transition-colors">
                                     Testimony
                                 </a>
                             </li>
                             <li>
-                                <a href="/Service" className="text-gray-700 hover:text-blue-600 transition-colors">
+                                <a href="#service" className="text-gray-700 hover:text-blue-600 transition-colors">
                                     Service
                                 </a>
                             </li>
                             <li>
-                                <a href="/home" className="text-gray-700 hover:text-blue-600 transition-colors">
+                                <a href="#home" className="text-gray-700 hover:text-blue-600 transition-colors">
                                     Home
                                 </a>
                             </li>
                             <li>
-                                <a href="/about" className="text-gray-700 hover:text-blue-600 transition-colors">
+                                <a href="#about" className="text-gray-700 hover:text-blue-600 transition-colors">
                                     About Us
                                 </a>
                             </li>
                             <li>
-                                <a href="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">
+                                <a href="#contact" className="text-gray-700 hover:text-blue-600 transition-colors">
                                     Contact
                                 </a>
                             </li>

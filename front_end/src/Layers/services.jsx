@@ -31,17 +31,17 @@ const Counter = () => {
   }, []);
 
   return (
-    <div className="counter-container">
+    <div className="counter-container  bg-[var(--one)] my-10" id="service">
       <div className="counter-item">
-        <h2 className="counter-number">{experience}+</h2>
+        <h4 className="counter-number  text-[var(--six)]">{experience}+</h4>
         <p className="counter-label">Years of Experience</p>
       </div>
       <div className="counter-item">
-        <h2 className="counter-number">{casesCompleted.toLocaleString()}</h2>
+        <h4 className="counter-number">{casesCompleted.toLocaleString()}</h4>
         <p className="counter-label">Cases Completed</p>
       </div>
       <div className="counter-item">
-        <h2 className="counter-number">{satisfiedCustomers.toLocaleString()}</h2>
+        <h4 className="counter-number">{satisfiedCustomers.toLocaleString()}</h4>
         <p className="counter-label">Satisfied Customers</p>
       </div>
     </div>

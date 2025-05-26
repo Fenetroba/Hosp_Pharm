@@ -1,5 +1,5 @@
 .footer {
-     background-color:var(--five); /* Green background for the footer */
+     background-color:var(--one); /* Green background for the footer */
      color: white;
      padding: 20px 0;
      position: relative;
@@ -61,7 +61,7 @@
 
 .semicircle {
      position: relative;
-     background:linear-gradient(rgba(0, 0, 0, 0.24) ,rgba(71, 24, 173, 0.76)),url('../../assets/doctorscolabration.jpg') center;
+     background:linear-gradient(rgba(97, 152, 197, 0.24) ,rgb(247, 243, 255)),url('../../assets/doctorscolabration.jpg') center;
      background-size: cover;
      background-position: center;
      height: 30vh;

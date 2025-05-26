@@ -32,7 +32,7 @@ const Display_History = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      await dispatch(FetchAll__prescription());
+       dispatch(FetchAll__prescription());
       setIsLoading(false);
     };
 
@@ -92,20 +92,25 @@ const Display_History = () => {
 
   return (
     <div className="m-5 shadow-green-900 shadow-md p-3.5 rounded-2xl mb-7">
-      { dispalyupdate&& <RadioGroup defaultValue="option-one" className="relative right-0 bg-green-950 p-3 rounded-2xl text-white">
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="option-one" id="option-one" />
-                        <Label htmlFor="option-one">CONFIRM</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="option-two" id="option-two" />
-                        <Label htmlFor="option-two">Pending</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="option-three" id="option-two" />
-                        <Label htmlFor="option-two">Rejecting</Label>
-                      </div>
-                    </RadioGroup>}
+      {dispalyupdate && (
+        <RadioGroup
+          defaultValue="option-one"
+          className="relative right-0 bg-green-950 p-3 rounded-2xl text-white"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="option-one" id="option-one" />
+            <Label htmlFor="option-one">CONFIRM</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="option-two" id="option-two" />
+            <Label htmlFor="option-two">Pending</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="option-three" id="option-two" />
+            <Label htmlFor="option-two">Rejecting</Label>
+          </div>
+        </RadioGroup>
+      )}
       <Table className="text-black m-2 md:m-8">
         <TableHeader>
           <TableRow>
@@ -147,7 +152,6 @@ const Display_History = () => {
                     minute: "numeric",
                     second: "numeric",
                   })}
-                  
                 </TableCell>
                 <TableCell>{prescription.patientNo}</TableCell>
                 <TableCell>{prescription.sex}</TableCell>
@@ -160,13 +164,14 @@ const Display_History = () => {
                       : "text-yellow-500 rounded-2xl"
                   } flex space-x-1.5`}
                 >
-                    <span> {prescription.status}</span>
-                    <span className="rounded-full hover:bg-amber-100" onClick={(e)=>setDisplayUpdate(!dispalyupdate)}>
-                      <Plus />
-                    </span>
-                  <div>
-                 
-                  </div>
+                  <span> {prescription.status}</span>
+                  <span
+                    className="rounded-full hover:bg-amber-100"
+                    onClick={(e) => setDisplayUpdate(!dispalyupdate)}
+                  >
+                    <Plus />
+                  </span>
+                  <div></div>
                 </TableCell>
               </TableRow>
             ))

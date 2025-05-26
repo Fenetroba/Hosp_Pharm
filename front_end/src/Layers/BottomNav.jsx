@@ -27,10 +27,10 @@ const BottomNav = () => {
     return (
         <nav className={`bottom-nav ${isHidden ? 'hidden' : ''}`}>
             <ul>
-                <li><a href="/dashboard"><RiHome2Line/></a></li>
-                <li><a href="/medications"><RiServiceFill/></a></li>
-                <li><a href="/prescriptions"><RiInfoCardFill/></a></li>
-                <li><a href="/contact"><RiContactsFill/></a></li>
+                <li><a href="#home"><RiHome2Line/></a></li>
+                <li><a href="#service"><RiServiceFill/></a></li>
+                <li><a href="#about"><RiInfoCardFill/></a></li>
+                <li><a href="#contact"><RiContactsFill/></a></li>
             </ul>
         </nav>
     );

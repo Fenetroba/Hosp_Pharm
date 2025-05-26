@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Style/contactUs.css'; // Import your CSS file
+import image4 from "../assets/doctorscolabration.jpg";
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -22,8 +23,11 @@ const Contact = () => {
     };
 
     return (
-        <div className="contact">
-            <h2 className="fade-in">Contact Us</h2>
+        <div>
+            <h4 className=" text-3xl font-bold text-[var(--one)] text-center ">Contact Us</h4>
+    <div className='flex justify-center item-center'>
+            
+    <div className="md:mx-10 mb-40 mt-10 p-10 " id="contact">
             <div className="contact-info fade-in">
                 <h3>Get in Touch</h3>
                 <p>If you have any questions or need assistance, feel free to reach out!</p>
@@ -65,6 +69,12 @@ const Contact = () => {
                 </div>
                 <button type="submit" className="submit-button">Send Message</button>
             </form>
+      </div>
+
+            <div>
+                <img src={image4} className='h-[600px] mt-10' alt="image4"  />
+            </div>
+    </div>
         </div>
     );
 };
