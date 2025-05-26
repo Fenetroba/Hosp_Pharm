@@ -17,11 +17,11 @@ const RelatedFinance = () => {
   });
 
   const FinanceHandler = async () => {
+    if (!Finance_record.DrugName || !Finance_record.Birr) {
+      toast.error("Please fill in all fields");
+      return;
+    }
     try {
-      if (!Finance_record.DrugName || !Finance_record.Birr) {
-        toast.error("Please fill in all fields");
-        return;
-      }
 
       const result = await dispatch(create__finance(Finance_record)).unwrap();
       
