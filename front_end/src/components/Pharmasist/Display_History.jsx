@@ -151,7 +151,7 @@ const Display_History = ({ searchQuery }) => {
   return (
     <div className="m-5 shadow-green-900 shadow-md p-3.5 rounded-2xl mb-7">
       <Toaster />
-      <div className="flex gap-4 mb-4">
+      <div className="sm:flex space-x-2 max-sm:space-y-2.5 mb-4">
         <select 
           onChange={handleDateChange} 
           value={selectedDate}
@@ -214,6 +214,7 @@ const Display_History = ({ searchQuery }) => {
       <Table className="text-black m-2 md:m-8">
         <TableHeader>
           <TableRow>
+            <TableHead>No</TableHead>
             <TableHead>Doctors Name</TableHead>
             <TableHead>Patient Name</TableHead>
             <TableHead>Created Date</TableHead>
@@ -230,12 +231,15 @@ const Display_History = ({ searchQuery }) => {
               </TableCell>
             </TableRow>
           ) : Array.isArray(prescriptions) && prescriptions.length > 0 ? (
-            filteredPrescriptions.map((prescription) => (
+            filteredPrescriptions.map((prescription,i) => (
               <TableRow
                 key={prescription._id}
                 onClick={() => handleRowClick(prescription._id)}
                 className="cursor-pointer hover:bg-green-100"
               >
+                <TableCell className="font-medium">
+                  {i+1}
+                </TableCell>
                 <TableCell className="font-medium">
                   {prescription.doctorName}
                 </TableCell>
@@ -292,11 +296,13 @@ const Display_History = ({ searchQuery }) => {
           <Table className="bg-[var(--fiveP)] text-black">
             <TableHeader>
               <TableRow>
+                <TableHead>Amount</TableHead>
                 <TableHead>Drug Name</TableHead>
                 <TableHead>Dosage</TableHead>
                 <TableHead>Frequency</TableHead>
                 <TableHead>Duration</TableHead>
                 <TableHead>Notes</TableHead>
+                
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -305,8 +311,9 @@ const Display_History = ({ searchQuery }) => {
                   .find(
                     (prescription) => prescription._id === openPrescriptionId
                   )
-                  ?.medications.map((medication) => (
+                  ?.medications.map((medication,i) => (
                     <TableRow key={medication._id}>
+                      <TableCell>{i+1}</TableCell>
                       <TableCell>{medication.DrugName}</TableCell>
                       <TableCell>{medication.dosage}</TableCell>
                       <TableCell>{medication.frequency}</TableCell>
