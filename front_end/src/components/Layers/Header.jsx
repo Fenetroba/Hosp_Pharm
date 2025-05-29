@@ -31,7 +31,7 @@ const Header = ({ title, onMenuClick }) => {
               )}
             </button>
             <div className="hidden lg:flex lg:items-center lg:ml-6">
-              <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
+              <h1 className="text-xl font-semibold text-gray-100">{title}</h1>
             </div>
           </div>
 
@@ -39,17 +39,7 @@ const Header = ({ title, onMenuClick }) => {
           <div className="hidden lg:flex lg:items-center lg:space-x-4">
             <div className="flex items-center space-x-4">
               <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <User className="h-8 w-8 text-gray-700" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-700">
-                    {user?.name || 'Admin'}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {user?.role || 'Administrator'}
-                  </p>
-                </div>
+             
               </div>
             </div>
           </div>

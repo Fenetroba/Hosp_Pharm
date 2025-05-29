@@ -72,6 +72,7 @@ const Settings = () => {
       <Header 
         title="Settings" 
         onMenuClick={setIsMobileMenuOpen}
+        className="text-white"
       />
 
       {/* Main Content */}
