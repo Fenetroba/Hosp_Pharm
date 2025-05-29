@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: hospital-pharmacy-api
+    runtime: node
+    buildCommand: cd back_end && npm install
+    startCommand: cd back_end && node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: hospital-pharmacy-web
+    runtime: node
+    buildCommand: cd front_end && npm install && npm run build
+    startCommand: cd front_end && npm run preview
+    envVars:
+      - key: VITE_API_URL
+        value: https://hospital-pharmacy-api.onrender.com 
