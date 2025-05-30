@@ -150,12 +150,25 @@ const Display_History = ({ searchQuery }) => {
 
   return (
     <div className="m-5 shadow-green-900 shadow-md p-3.5 rounded-2xl mb-7">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 0ce4fab7b5aa814b0d11745dcedac9374f641bd5
       <Toaster />
       <div className="flex gap-4 mb-4">
         <select 
           onChange={handleDateChange} 
           value={selectedDate}
           className="px-5 cursor-pointer py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+<<<<<<< HEAD
+=======
+=======
+      {dispalyupdate && (
+        <RadioGroup
+          defaultValue="option-one"
+          className="relative right-0 bg-green-950 p-3 rounded-2xl text-white"
+>>>>>>> 4f996045518191b26d780759fa29621d44ff7037
+>>>>>>> 0ce4fab7b5aa814b0d11745dcedac9374f641bd5
         >
           <option value="">All Dates</option>
           <option value="today">Today</option>

@@ -118,8 +118,11 @@ const HeroSection = () => {
             variants={itemVariants}
           >
           
+<<<<<<< HEAD
+=======
 
           
+>>>>>>> 4f996045518191b26d780759fa29621d44ff7037
           </motion.div>
         </motion.div>
       </div>
@@ -131,7 +134,13 @@ const HeroSection = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.8 }}
       >
+<<<<<<< HEAD
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+        </div>
+=======
         
+>>>>>>> 4f996045518191b26d780759fa29621d44ff7037
       </motion.div>
     </motion.div>
   );

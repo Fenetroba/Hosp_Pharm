@@ -49,7 +49,11 @@
     }
 
     return (
+<<<<<<< HEAD
+      <div className="mt-5 px-4 sm:px-6 lg:px-8 max-w-screen-xl mx-auto pt-20 sm:ml-20 ml-2.5 mb-20 overflow-auto">
+=======
       <div className="mt-5 mb-20 overflow-auto px-4 sm:px-6 lg:px-8 max-w-screen-xl mx-auto pt-20 sm:ml-20 ml-2.5">
+>>>>>>> 4f996045518191b26d780759fa29621d44ff7037
         <h1 className="text-3xl font-bold text-gray-800 mb-8">User Management</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
