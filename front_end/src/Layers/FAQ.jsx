@@ -53,7 +53,7 @@ export default function FAQ() {
       initial="hidden"
       animate={isVisible ? "visible" : "hidden"}
     >
-      <h4 className="text-3xl font-bold mt-11 mb-15 text-[var(--one)] text-center">
+      <h4 className="text-center text-3xl text-[#f78420] font-bold mt-11 mb-15 text-[var(--one)] text-center">
         Frequently Asked Questions (FAQ)
       </h4>
       <div className=" sm:shadow-2xl  sm:p-10.5 text-black">
