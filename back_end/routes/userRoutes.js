@@ -1,34 +1,16 @@
 import express from 'express'
-import { 
-  register, 
-  login, 
-  getProfile, 
-  updateProfile, 
-  getAllUsers, 
-  deleteUser,
-  getDoctorsCount,
-  getPharmacistsCount,
-  getPatientsCount
-} from '../controllers/UserController.js'
+import {deleteUser, register, searchUserByName, SeeAllUsers, updateUser,getByRole} from '../controllers/AdminController.js'
 import authMiddleware from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-// Auth routes
+// Register a new user
 router.post('/register', register)
-router.post('/login', login)
+router.get('/all_users', SeeAllUsers)
+router.get('/get_singl_user', searchUserByName)
+router.get('/get_User_role', getByRole)
+router.patch('/update_user/:id',authMiddleware, updateUser)
+router.delete('/delete_user/:id', deleteUser)
 
-// Protected routes
-router.get('/profile', authMiddleware, getProfile)
-router.put('/profile', authMiddleware, updateProfile)
-
-// Admin routes
-router.get('/all', authMiddleware, getAllUsers)
-router.delete('/:id', authMiddleware, deleteUser)
-
-// Statistics routes
-router.get('/doctors/count', authMiddleware, getDoctorsCount)
-router.get('/pharmacists/count', authMiddleware, getPharmacistsCount)
-router.get('/patients/count', authMiddleware, getPatientsCount)
 
 export default router
