@@ -72,17 +72,10 @@ export const GetAllPrescriptions = async (req, res) => {
 };
 export const UpdatePrescription = async(req,res)=>{
          const {id}=req.params;
-         const {patientName,address,age,sex,date,doctorName,patientNo,status}=req.body;
+         const {status}=req.body;
          try {
             const prescription = await Prescription.findByIdAndUpdate(id,{
-               patientName,
-               address,
-               age,
-               sex,
-               date,
-               doctorName,
-               patientNo,
-               status,
+               status
             });
             if(!prescription){
                return res.status(404).json({success:false,message:"prescription not found"});

@@ -5,7 +5,7 @@ const Sider = () => {
   const [toggle, setoggle] = useState(false);
   return (
     <div
-      className={`fixed flex flex-col  top-[66px] h-screen bg-[#041e06] shadow-md  ${
+      className={`fixed flex flex-col z-30  top-[66px] h-screen bg-[#041e06] shadow-md  ${
         toggle ? "w-[190px] absolute" : "w-10.5"
       } transition-all duration-300`}
     >
