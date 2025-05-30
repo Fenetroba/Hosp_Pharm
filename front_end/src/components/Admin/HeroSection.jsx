@@ -117,25 +117,7 @@ const HeroSection = () => {
             className="flex flex-col sm:flex-row gap-4 justify-center"
             variants={itemVariants}
           >
-            <motion.button
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              className="px-8 py-3 bg-[var(--adminO)] text-white rounded-lg font-semibold shadow-lg"
-              onClick={() => navigate('/admin/dashboard')}
-            >
-              Go to Dashboard
-            </motion.button>
-
-            <motion.button
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              className="px-8 py-3 bg-white text-[#031021] rounded-lg font-semibold shadow-lg"
-              onClick={() => navigate('/admin/users')}
-            >
-              Manage Users
-            </motion.button>
+          
           </motion.div>
         </motion.div>
       </div>
@@ -148,25 +130,7 @@ const HeroSection = () => {
         transition={{ delay: 0.5, duration: 0.8 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { label: 'Total Users', value: '1,234' },
-              { label: 'Active Prescriptions', value: '567' },
-              { label: 'Today\'s Orders', value: '89' },
-              { label: 'System Health', value: '100%' }
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                className="text-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-              >
-                <div className="text-3xl font-bold text-white">{stat.value}</div>
-                <div className="text-gray-300">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
+          
         </div>
       </motion.div>
     </motion.div>

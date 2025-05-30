@@ -1,47 +1,32 @@
 import express from 'express';
 import cors from 'cors';
-import dbconnect from './config/db.js';
 import dotenv from 'dotenv';
-const PORT = process.env.PORT || 5000;
-import cookieParser from 'cookie-parser';
+import connectDB from './config/db.js';
+import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import prescriptionRoutes from './routes/prescriptionRoutes.js';
 
-
-
-import User_RegisterRouter from './routes/userRoutes.js';
-import User_LoginRouter from './routes/authRoutes.js';
-import PrescriptionRouter from './routes/prescriptionRoutes.js';
-import financeRouter from './routes/Financial.js';
 dotenv.config();
+
 const app = express();
+
+// Connect to MongoDB
+connectDB();
+
+// Middleware
 app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["POST", "GET", "PATCH", "DELETE","PUT"],
-  allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
-  ],
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials: true
 }));
- 
 app.use(express.json());
-app.use(cookieParser());
 
-app.use('/api/user', User_RegisterRouter)
-app.use('/api/auth', User_LoginRouter)
-app.use('/api/prescription', PrescriptionRouter)
-app.use('/api/payment',financeRouter)
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/prescriptions', prescriptionRoutes);
 
+const PORT = process.env.PORT || 5000;
 
-
-
-
-
-app.listen(PORT, () => { 
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  dbconnect();
-
-
 });  
