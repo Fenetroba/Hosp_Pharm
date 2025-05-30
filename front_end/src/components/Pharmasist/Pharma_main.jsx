@@ -26,7 +26,7 @@ const Pharma_main = () => {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         {/* Notifications Sidebar */}
-        <div className="lg:col-span-1 ml-10 bg-[var(--oneP)] rounded-lg shadow-sm h-[calc(100vh-250px)] overflow-y-auto">
+        <div className="lg:col-span-1 bg-[var(--oneP)] rounded-lg shadow-sm h-[calc(100vh-250px)] overflow-y-auto">
           <NotificationPharma />
         </div>
 
