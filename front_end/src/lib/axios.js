@@ -2,8 +2,8 @@ import axios from "axios";
 
 // Determine the base URL based on the environment
 const baseURL = import.meta.env.MODE === "development" 
-  ? "https://hosp-pharm-2.onrender.com" 
-  : "/api";
+  ? "http://localhost:5000/api" 
+  : "https://hosp-pharm-2.onrender.com ";
 
 const axiosInstance = axios.create({
   baseURL,
