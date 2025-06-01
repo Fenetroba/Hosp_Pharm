@@ -150,79 +150,36 @@ const Display_History = ({ searchQuery }) => {
 
   return (
     <div className="m-5 shadow-green-900 shadow-md p-3.5 rounded-2xl mb-7">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 4f99604 (fd)
+
       <Toaster />
       <div className="flex gap-4 mb-4">
         <select 
           onChange={handleDateChange} 
           value={selectedDate}
           className="px-5 cursor-pointer py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-<<<<<<< HEAD
-=======
-      {dispalyupdate && (
-        <RadioGroup
-          defaultValue="option-one"
-          className="relative right-0 bg-green-950 p-3 rounded-2xl text-white"
->>>>>>> 4f996045518191b26d780759fa29621d44ff7037
-=======
->>>>>>> parent of 4f99604 (fd)
         >
-          <option value="">All Dates</option>
-          <option value="today">Today</option>
-          <option value="week">This Week</option>
-          <option value="month">This Month</option>
         </select>
 
-        <select 
-          onChange={handleSexChange} 
-          value={selectedSex}
-          className="px-5 cursor-pointer py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          <option value="">All Genders</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-
-        <select 
-          onChange={handleStatusChange} 
-          value={selectedStatus}
-          className="px-5 cursor-pointer py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          <option value="">All Status</option>
-          <option value="rejecting">Rejecting</option>
-          <option value="pending">Pending</option>
-          <option value="Completed">Completed</option>
-        </select>
+        {dispalyupdate && (
+          <RadioGroup
+            defaultValue="option-one"
+            className="relative right-0 bg-green-950 p-3 rounded-2xl text-white"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="option-one" id="option-one" />
+              <Label htmlFor="option-one">CONFIRM</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="option-two" id="option-two" />
+              <Label htmlFor="option-two">Pending</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="option-three" id="option-three" />
+              <Label htmlFor="option-three">Reject</Label>
+            </div>
+          </RadioGroup>
+        )}
       </div>
-
-      {selectedPrescriptionId && (
-        <div className="mb-4 p-4 bg-gray-100 rounded-lg">
-          <h3 className="text-lg font-semibold mb-2">Update Status</h3>
-          <div className="flex gap-2">
-            <button
-              onClick={() => handleStatusUpdate(selectedPrescriptionId, "Completed")}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              Confirm
-            </button>
-            <button
-              onClick={() => handleStatusUpdate(selectedPrescriptionId, "pending")}
-              className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-            >
-              Pending
-            </button>
-            <button
-              onClick={() => handleStatusUpdate(selectedPrescriptionId, "rejecting")}
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-            >
-              Reject
-            </button>
-          </div>
-        </div>
-      )}
 
       <Table className="text-black m-2 md:m-8">
         <TableHeader>
@@ -333,7 +290,7 @@ const Display_History = ({ searchQuery }) => {
         </div>
       )}
     </div>
-  );
+  )
 };
 
 export default Display_History;

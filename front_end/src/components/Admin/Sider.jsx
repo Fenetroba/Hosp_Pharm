@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Logs, LayoutDashboard, User, Cog } from "lucide-react";
+import { Logs, LayoutDashboard, User, Cog, Bug } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -30,6 +30,12 @@ const Sider = () => {
       label: 'Settings',
       icon: <Cog />,
       roles: ['Admin', 'Pharma']
+    },
+    {
+      path: 'reports',
+      label: 'Reports',
+      icon: <Bug />,
+      roles: ['Admin', 'Pharma', 'doctor']
     }
   ];
 
