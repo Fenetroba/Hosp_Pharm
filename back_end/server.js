@@ -45,7 +45,7 @@ app.use('/api/payment',financeRouter)
 app.use('/api/reports', reportRouter)
 
 // Define frontend build path
-const frontendBuildPath = path.join(__dirname, "./front_end/dist");
+const frontendBuildPath = path.join(__dirname, "../../front_end/dist");
 const indexHtmlPath = path.join(frontendBuildPath, "index.html");
 
 console.log("Frontend build path:", frontendBuildPath);
