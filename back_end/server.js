@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const PORT = process.env.PORT || 5000;
 
@@ -23,7 +24,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.NODE_ENV === "production" ? false : "http://localhost:5173",
   methods: ["POST", "GET", "PATCH", "DELETE","PUT"],
   allowedHeaders: [
       "Content-Type",
@@ -38,19 +39,33 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+// API Routes
 app.use('/api/user', User_RegisterRouter)
 app.use('/api/auth', User_LoginRouter)
 app.use('/api/prescription', PrescriptionRouter)
 app.use('/api/payment',financeRouter)
 app.use('/api/reports', reportRouter)
 
-// Serve static files from the frontend build directory
-app.use(express.static(path.join(__dirname, "../front_end/dist")));
+// Check if frontend build exists
+const frontendBuildPath = path.join(__dirname, "../front_end/dist");
+const indexHtmlPath = path.join(frontendBuildPath, "index.html");
 
-// Handle all other routes by serving the index.html
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../front_end/dist/index.html"));
-});
+if (fs.existsSync(frontendBuildPath) && fs.existsSync(indexHtmlPath)) {
+  // Serve static files from the frontend build directory
+  app.use(express.static(frontendBuildPath));
+
+  // Handle all other routes by serving the index.html
+  app.get("*", (req, res) => {
+    res.sendFile(indexHtmlPath);
+  });
+} else {
+  console.log("Frontend build not found. Running in API-only mode.");
+  
+  // API-only mode route handler
+  app.get("*", (req, res) => {
+    res.json({ message: "API is running. Frontend build not found." });
+  });
+}
 
 app.listen(PORT, () => { 
   console.log(`Server is running on port ${PORT}`);
