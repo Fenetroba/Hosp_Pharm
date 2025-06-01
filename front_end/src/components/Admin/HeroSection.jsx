@@ -117,14 +117,7 @@ const HeroSection = () => {
             className="flex flex-col sm:flex-row gap-4 justify-center"
             variants={itemVariants}
           >
-<<<<<<< HEAD
-          
-<<<<<<< HEAD
-=======
 
-          
->>>>>>> 4f996045518191b26d780759fa29621d44ff7037
-=======
             <motion.button
               variants={buttonVariants}
               whileHover="hover"
@@ -144,7 +137,7 @@ const HeroSection = () => {
             >
               Manage Users
             </motion.button>
->>>>>>> parent of cc08056 (Remove Reports functionality and update related components)
+
           </motion.div>
         </motion.div>
       </div>
@@ -156,7 +149,7 @@ const HeroSection = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.8 }}
       >
-<<<<<<< HEAD
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -178,9 +171,7 @@ const HeroSection = () => {
             ))}
           </div>
         </div>
-=======
-        
->>>>>>> 4f996045518191b26d780759fa29621d44ff7037
+
       </motion.div>
     </motion.div>
   );
