@@ -11,10 +11,6 @@ echo "Project root: $PROJECT_ROOT"
 FRONTEND_DIR="$PROJECT_ROOT/front_end"
 FRONTEND_DIST="$FRONTEND_DIR/dist"
 
-# Backend paths
-BACKEND_DIR="$PROJECT_ROOT/back_end"
-BACKEND_DIST="$BACKEND_DIR/dist"
-
 echo "Starting build process..."
 
 # Check if frontend directory exists
@@ -47,33 +43,28 @@ if [ ! -d "dist" ]; then
     exit 1
 fi
 
-echo "Frontend build completed successfully"
+if [ ! -f "dist/index.html" ]; then
+    echo "Error: Frontend build failed - index.html not found"
+    exit 1
+fi
 
-# Create backend dist directory if it doesn't exist
+echo "Frontend build completed successfully"
+echo "Build directory contents:"
+ls -la dist/
+
+# Navigate back to root
+cd "$PROJECT_ROOT"
+
+# Navigate to backend directory
 echo "Setting up backend..."
-cd "$BACKEND_DIR"
+cd "$PROJECT_ROOT/back_end"
 
 # Install backend dependencies
 echo "Installing backend dependencies..."
 npm install
 
-# Create the dist directory in the backend
-echo "Creating backend dist directory..."
-mkdir -p "$BACKEND_DIR/dist"
-
-# Copy frontend build to backend dist
-echo "Copying frontend build files to backend..."
-cp -r "$FRONTEND_DIST"/* "$BACKEND_DIR/dist/"
-
-# Verify the copy
-if [ ! -f "$BACKEND_DIR/dist/index.html" ]; then
-    echo "Error: Failed to copy frontend build to backend"
-    exit 1
-fi
-
 echo "Build process completed successfully"
 echo "Starting server..."
 
 # Start the server
-cd "$BACKEND_DIR"
 npm start 
