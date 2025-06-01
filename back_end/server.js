@@ -22,15 +22,26 @@ dotenv.config();
 
 const app = express();
 
+// Configure CORS based on environment
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+  ? ['https://your-production-domain.com'] // Add your production domain
+  : ['http://localhost:5173'];
+
 app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["POST", "GET", "PATCH", "DELETE","PUT"],
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ["POST", "GET", "PATCH", "DELETE", "PUT"],
   allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
+    "Content-Type",
+    "Authorization",
+    "Cache-Control",
+    "Expires",
+    "Pragma",
   ],
   credentials: true
 }));
@@ -48,11 +59,14 @@ app.use('/api/reports', reportRouter)
 const frontendBuildPath = path.join(__dirname, "../../front_end/dist");
 const indexHtmlPath = path.join(frontendBuildPath, "index.html");
 
+console.log("Environment:", process.env.NODE_ENV || 'development');
 console.log("Frontend build path:", frontendBuildPath);
 console.log("Index.html path:", indexHtmlPath);
 
-// Check if we're in production and the frontend build exists
+// Always try to serve frontend in production, fallback to API-only mode if not found
 if (process.env.NODE_ENV === "production") {
+  console.log("Running in production mode");
+  
   if (fs.existsSync(frontendBuildPath) && fs.existsSync(indexHtmlPath)) {
     console.log("Serving frontend from:", frontendBuildPath);
     // Serve static files from the frontend build directory
@@ -67,13 +81,23 @@ if (process.env.NODE_ENV === "production") {
     app.get("*", (req, res) => {
       res.json({ 
         message: "API is running. Frontend build not found.",
-        status: "api-only"
+        status: "api-only",
+        environment: process.env.NODE_ENV
       });
     });
   }
+} else {
+  console.log("Running in development mode");
+  app.get("/", (req, res) => {
+    res.json({ 
+      message: "API is running in development mode",
+      status: "development"
+    });
+  });
 }
 
 app.listen(PORT, () => { 
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   dbconnect();
 });  
