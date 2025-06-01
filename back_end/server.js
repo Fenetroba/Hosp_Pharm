@@ -47,7 +47,7 @@ app.use('/api/payment',financeRouter)
 app.use('/api/reports', reportRouter)
 
 // Check if frontend build exists
-const frontendBuildPath = path.join(__dirname, "../front_end/dist");
+const frontendBuildPath = path.join(__dirname, "dist");
 const indexHtmlPath = path.join(frontendBuildPath, "index.html");
 
 console.log("Checking frontend build...");
