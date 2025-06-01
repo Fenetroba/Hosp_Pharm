@@ -15,6 +15,7 @@ import { ChevronDown } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdateUser } from "@/store/UserData__slice";
 import Loading from "../ui/loading/Loading";
+import Header from "./Header";
 
 const CRUD = ({ user }) => {
   const {loading}=useSelector(state=>state.user)
@@ -52,9 +53,10 @@ const CRUD = ({ user }) => {
   return (
     <div className="relative">
       <Toaster/>
+     
       <Sider />
 
-      <div className="grid grid-cols-1 md:grid-cols-5 grid-rows-auto gap-2 mt-2 md:mt-4 ml-12 mr-2 mb-3.5">
+      <div className=" mt-20 grid grid-cols-1 md:grid-cols-5 grid-rows-auto gap-2 md:mt-4 ml-12 mr-2 mb-3.5">
         <div className="col-span-1 md:col-span-3 row-span-5 bg-[var(--one)] ">
           <div className="flex max-md:flex-col pb-30">
             <div className="text-white pt-3 px-6 max-w-[500px]">

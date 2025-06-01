@@ -52,7 +52,7 @@
 
 
 
-      <div className="mt-5 px-4 sm:px-6 lg:px-8 max-w-screen-xl mx-auto pt-20 sm:ml-20 ml-2.5">
+      <div className="mt-5 px-4 sm:px-6 lg:px-8 max-w-screen-xl mx-auto pt-20 sm:ml-20 ml-2.5 mb-40">
 
         <h1 className="text-3xl font-bold text-gray-800 mb-8">User Management</h1>
         

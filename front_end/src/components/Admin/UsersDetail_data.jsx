@@ -104,7 +104,7 @@ const UsersDetail_data = ({ selectedUser, onCreateUser, onUpdateUser, onDeleteUs
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4 bg-white rounded-lg shadow-md h-[calc(100vh-200px)] overflow-y-auto w-[calc(75vw-200px)] mr-7">
       <div className="flex space-x-4 border-b-2 pb-4 mb-4">
         <button 
           className={`py-1 px-6 rounded-2xl transition-colors ${activeForm === 'create' ? 'bg-green-200' : 'bg-green-100 hover:bg-green-200'}`}

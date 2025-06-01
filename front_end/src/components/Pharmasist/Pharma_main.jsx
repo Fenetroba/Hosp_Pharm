@@ -26,14 +26,14 @@ const Pharma_main = () => {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         {/* Notifications Sidebar */}
-        <div className="lg:col-span-1 bg-[var(--oneP)] rounded-lg shadow-sm h-[calc(100vh-250px)] overflow-y-auto">
+        <div className="lg:col-span-1 bg-[var(--oneP)] rounded-lg shadow-sm ml-10 h-[calc(20vh-20px)] overflow-y-auto">
           <NotificationPharma />
         </div>
 
         {/* Main Content Area */}
         <div className="lg:col-span-4 space-y-4">
           {/* Front Side Section */}
-          <div className="bg-[var(--oneP)] rounded-lg shadow-sm min-h-[400px]">
+          <div className="bg-[var(--oneP)] rounded-lg shadow-sm min-h-[400px] ">
             <FrontSide />
           </div>
 

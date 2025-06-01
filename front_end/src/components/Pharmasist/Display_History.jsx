@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -13,9 +19,10 @@ import {
 } from "@/components/ui/table";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchAll__prescription, update__Prescription } from "@/store/prescription";
-import { Minus, Plus, Subscript } from "lucide-react";
+import { Minus, Plus, CheckCircle2, XCircle, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { Button } from "@/components/ui/button";
 
 const Display_History = ({ searchQuery }) => {
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -26,6 +33,8 @@ const Display_History = ({ searchQuery }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredPrescriptions, setFilteredPrescriptions] = useState([]);
   const [selectedPrescriptionId, setSelectedPrescriptionId] = useState(null);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+  const [newStatus, setNewStatus] = useState("");
 
   // Access prescriptions from the Redux store
   const prescriptions = useSelector(
@@ -119,38 +128,46 @@ const Display_History = ({ searchQuery }) => {
     setSelectedDate(e.target.value);
   };
 
-  const handleStatusUpdate = async (prescriptionId, newStatus) => {
+  const openStatusModal = (prescriptionId, currentStatus) => {
+    setSelectedPrescriptionId(prescriptionId);
+    setNewStatus(currentStatus);
+    setIsStatusModalOpen(true);
+  };
+
+  const handleStatusUpdate = async () => {
     try {
-      // Update the prescription status in the database
       const result = await dispatch(update__Prescription({
-        PrescriptionId: prescriptionId,
+        PrescriptionId: selectedPrescriptionId,
         prescription__Data: { status: newStatus }
       })).unwrap();
 
-      // Show success toast
       toast.success(`Status updated to ${newStatus}`, {
         description: "The prescription status has been updated successfully.",
       });
       
-      // Refresh the prescriptions list
       dispatch(FetchAll__prescription());
-      
-      // Close the status update UI
+      setIsStatusModalOpen(false);
       setSelectedPrescriptionId(null);
     } catch (error) {
-      // Show error toast
       toast.error("Failed to update status", {
         description: error.message || "There was an error updating the prescription status.",
       });
     }
   };
 
-  const [dispalyEdit, setDisplayEdit] = useState(false);
-  const [dispalyupdate, setDisplayUpdate] = useState(false);
+  const getStatusIcon = (status) => {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+      case 'rejected':
+        return <XCircle className="w-4 h-4 text-red-500" />;
+      default:
+        return <Clock className="w-4 h-4 text-yellow-500" />;
+    }
+  };
 
   return (
     <div className="m-5 shadow-green-900 shadow-md p-3.5 rounded-2xl mb-7">
-
       <Toaster />
       <div className="flex gap-4 mb-4">
         <select 
@@ -158,27 +175,32 @@ const Display_History = ({ searchQuery }) => {
           value={selectedDate}
           className="px-5 cursor-pointer py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
+          <option value="">All Time</option>
+          <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
         </select>
 
-        {dispalyupdate && (
-          <RadioGroup
-            defaultValue="option-one"
-            className="relative right-0 bg-green-950 p-3 rounded-2xl text-white"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="option-one" id="option-one" />
-              <Label htmlFor="option-one">CONFIRM</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="option-two" id="option-two" />
-              <Label htmlFor="option-two">Pending</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="option-three" id="option-three" />
-              <Label htmlFor="option-three">Reject</Label>
-            </div>
-          </RadioGroup>
-        )}
+        <select
+          value={selectedStatus}
+          onChange={handleStatusChange}
+          className="px-5 cursor-pointer py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+          <option value="">All Status</option>
+          <option value="Completed">Completed</option>
+          <option value="pending">Pending</option>
+          <option value="rejected">Rejected</option>
+        </select>
+
+        <select
+          value={selectedSex}
+          onChange={handleSexChange}
+          className="px-5 cursor-pointer py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+          <option value="">All Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
       </div>
 
       <Table className="text-black m-2 md:m-8">
@@ -212,7 +234,6 @@ const Display_History = ({ searchQuery }) => {
                 <TableCell className="font-medium">
                   {prescription.patientName}
                 </TableCell>
-
                 <TableCell>
                   {new Date(prescription.createdAt).toLocaleString(undefined, {
                     year: "numeric",
@@ -225,25 +246,30 @@ const Display_History = ({ searchQuery }) => {
                 </TableCell>
                 <TableCell>{prescription.patientNo}</TableCell>
                 <TableCell>{prescription.sex}</TableCell>
-                <TableCell
-                  className={`${
-                    prescription.status === "Completed"
-                      ? "bg-green-500 rounded-2xl text-black"
-                      : prescription.status === "rejecting"
-                      ? "bg-red-500 rounded-2xl"
-                      : "bg-yellow-500 rounded-2xl"
-                  } flex space-x-1.5 justify-between w-[90%]`}
-                >
-                  <span>{prescription.status}</span>
-                  <span
-                    className="rounded-full hover:bg-amber-100"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedPrescriptionId(prescription._id);
-                    }}
+                <TableCell>
+                  <div
+                    className={`flex items-center justify-between px-3 py-1 rounded-full ${
+                      prescription.status === "Completed"
+                        ? "bg-green-100 text-green-800"
+                        : prescription.status === "Rejected"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-yellow-100 text-yellow-800"
+                    }`}
                   >
-                    <Plus />
-                  </span>
+                    <div className="flex items-center gap-2">
+                      {getStatusIcon(prescription.status)}
+                      <span>{prescription.status}</span>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openStatusModal(prescription._id, prescription.status);
+                      }}
+                      className="p-1 hover:bg-white rounded-full transition-colors"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))
@@ -284,13 +310,61 @@ const Display_History = ({ searchQuery }) => {
                       <TableCell>{medication.notes}</TableCell>
                     </TableRow>
                   ))}
-             
             </TableBody>
           </Table>
         </div>
       )}
+
+      <Dialog open={isStatusModalOpen} onOpenChange={setIsStatusModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">Update Prescription Status</DialogTitle>
+          </DialogHeader>
+          <div className="py-4 t">
+            <RadioGroup
+              value={newStatus}
+              onValueChange={setNewStatus}
+              className="space-y-3"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Completed" id="completed" className="w-6 h-6 cursor-pointer" />
+                <Label htmlFor="completed" className="flex items-center gap-2">
+               <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <span className="text-[20px]">Completed</span>
+               </div>
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Pending" id="pending" className="w-6 h-6 cursor-pointer" />
+                <Label htmlFor="pending" className="flex items-center gap-2">
+               <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-yellow-500" />
+                <span className="text-[20px]">Pending</span>
+               </div>
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Rejected" id="rejected" className="w-6 h-6 cursor-pointer" />
+                <Label htmlFor="rejected" className="flex items-center gap-2">
+               <div className="flex items-center gap-2">
+                <XCircle className="w-4 h-4 text-red-500" />
+                <span className="text-[20px]">Rejected</span>
+               </div>
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" className="bg-red-500 hover:bg-red-600 text-white font-bold cursor-pointer" onClick={() => setIsStatusModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button className="bg-green-500 hover:bg-green-600 text-white font-bold cursor-pointer"  onClick={handleStatusUpdate}>Update Status</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
-  )
+  );
 };
 
 export default Display_History;

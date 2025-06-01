@@ -2,67 +2,101 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Download, Filter, Search, Calendar } from 'lucide-react';
 import Sider from './Sider';
+import axios from 'axios';
 
 const Reports = () => {
   const { user } = useSelector((state) => state.Auth);
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     type: 'all',
     dateRange: 'all',
     status: 'all',
-    search: ''
+    search: '',
+    startDate: '',
+    endDate: ''
   });
 
-  // Sample report data - replace with actual API calls
-  useEffect(() => {
-    const sampleReports = [
-      {
-        id: 1,
-        title: 'Daily Inventory Report',
-        type: 'inventory',
-        date: '2024-03-20',
-        status: 'completed',
-        generatedBy: 'Admin',
-        downloadUrl: '#'
-      },
-      {
-        id: 2,
-        title: 'Monthly Sales Analysis',
-        type: 'sales',
-        date: '2024-03-19',
-        status: 'pending',
-        generatedBy: 'Pharma',
-        downloadUrl: '#'
-      },
-      {
-        id: 3,
-        title: 'Patient Medication History',
-        type: 'patient',
-        date: '2024-03-18',
-        status: 'completed',
-        generatedBy: 'doctor',
-        downloadUrl: '#'
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
+  const generateReport = async (type) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { startDate, endDate } = filters;
+      const params = {};
+      if (startDate && endDate) {
+        params.startDate = startDate;
+        params.endDate = endDate;
       }
-    ];
-    setReports(sampleReports);
-    setFilteredReports(sampleReports);
-  }, []);
+
+      const response = await axios.get(`/api/reports/${type}`, {
+        params,
+        withCredentials: true
+      });
+
+      if (response.data.success) {
+        const newReport = {
+          id: Date.now(),
+          title: `${type.charAt(0).toUpperCase() + type.slice(1)} Report`,
+          type,
+          date: new Date().toISOString().split('T')[0],
+          status: 'completed',
+          generatedBy: user.name,
+          data: response.data.report
+        };
+
+        setReports(prev => [newReport, ...prev]);
+        setFilteredReports(prev => [newReport, ...prev]);
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || 'Error generating report');
+      console.error('Error generating report:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleExport = (report) => {
+    try {
+      const reportData = {
+        title: report.title,
+        type: report.type,
+        date: report.date,
+        generatedBy: report.generatedBy,
+        data: report.data
+      };
+
+      const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${report.type}_report_${report.date}.json`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error exporting report:', error);
+      setError('Error exporting report');
+    }
+  };
 
   useEffect(() => {
     let filtered = [...reports];
 
-    // Apply type filter
     if (filters.type !== 'all') {
       filtered = filtered.filter(report => report.type === filters.type);
     }
 
-    // Apply status filter
     if (filters.status !== 'all') {
       filtered = filtered.filter(report => report.status === filters.status);
     }
 
-    // Apply search filter
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase();
       filtered = filtered.filter(report => 
@@ -74,26 +108,18 @@ const Reports = () => {
     setFilteredReports(filtered);
   }, [filters, reports]);
 
-  const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
-
-  const handleExport = (report) => {
-    // Implement export functionality
-    console.log('Exporting report:', report);
-  };
-
-  const handleGenerateReport = (type) => {
-    // Implement report generation
-    console.log('Generating report:', type);
-  };
-
   return (
     <div className="">
       <Sider />
       <h3 className="text-2xl font-bold mb-4 bg-[var(--one)] p-4.5 text-white text-center fixed top-0 left-0 w-full">Reports</h3>
 
       <div className="p-4 sm:m-20 m-6 mt-20">
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
+
         {/* Filters and Search */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -107,22 +133,29 @@ const Reports = () => {
                 <option value="inventory">Inventory</option>
                 <option value="sales">Sales</option>
                 <option value="patient">Patient</option>
-                <option value="pharmacy">Pharmacy</option>
               </select>
               <Filter className="absolute right-3 top-3 text-gray-400" size={16} />
             </div>
 
             <div className="relative">
-              <select
-                value={filters.status}
-                onChange={(e) => handleFilterChange('status', e.target.value)}
+              <input
+                type="date"
+                value={filters.startDate}
+                onChange={(e) => handleFilterChange('startDate', e.target.value)}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              >
-                <option value="all">All Status</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="failed">Failed</option>
-              </select>
+                placeholder="Start Date"
+              />
+              <Calendar className="absolute right-3 top-3 text-gray-400" size={16} />
+            </div>
+
+            <div className="relative">
+              <input
+                type="date"
+                value={filters.endDate}
+                onChange={(e) => handleFilterChange('endDate', e.target.value)}
+                className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                placeholder="End Date"
+              />
               <Calendar className="absolute right-3 top-3 text-gray-400" size={16} />
             </div>
 
@@ -136,13 +169,6 @@ const Reports = () => {
               />
               <Search className="absolute right-3 top-3 text-gray-400" size={16} />
             </div>
-
-            <button
-              onClick={() => handleGenerateReport('custom')}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
-            >
-              Generate New Report
-            </button>
           </div>
         </div>
 
@@ -165,6 +191,57 @@ const Reports = () => {
                 <p>Type: <span className="font-medium">{report.type}</span></p>
                 <p>Date: <span className="font-medium">{report.date}</span></p>
                 <p>Generated By: <span className="font-medium">{report.generatedBy}</span></p>
+                {report.data && (
+                  <div className="mt-2">
+                    <p className="font-medium">Summary:</p>
+                    <ul className="list-disc list-inside">
+                      {report.type === 'inventory' && (
+                        <li>Total Medications: {report.data.totalMedications}</li>
+                      )}
+                      {report.type === 'sales' && (
+                        <>
+                          <li>Total Sales: {report.data?.totalSales || 0} Birr</li>
+                          <li>Total Transactions: {report.data?.totalTransactions || 0}</li>
+                          {report.data?.drugSales && report.data.drugSales.length > 0 && (
+                            <div className="mt-4">
+                              <h4 className="font-medium mb-2">Drug Sales Summary:</h4>
+                              <div className="max-h-40 overflow-y-auto">
+                                {report.data.drugSales.map((drug, index) => (
+                                  <div key={index} className="text-sm mb-1">
+                                    {drug.DrugName}: {drug.count} units - {drug.totalAmount} Birr
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {report.data?.pharmacistSales && report.data.pharmacistSales.length > 0 && (
+                            <div className="mt-4">
+                              <h4 className="font-medium mb-2">Pharmacist Performance:</h4>
+                              <div className="max-h-40 overflow-y-auto">
+                                {report.data.pharmacistSales.map((pharma, index) => (
+                                  <div key={index} className="text-sm mb-2 border-b pb-1">
+                                    <div className="font-medium">{pharma.name}</div>
+                                    <div>Total Sales: {pharma.totalAmount} Birr</div>
+                                    <div>Transactions: {pharma.transactions}</div>
+                                    <div className="text-xs mt-1">
+                                      Drugs Sold: {pharma.drugsSold?.map(drug => drug.DrugName).join(', ') || 'None'}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {report.type === 'patient' && (
+                        <>
+                          <li>Total Patients: {report.data.totalPatients}</li>
+                          <li>Total Prescriptions: {report.data.totalPrescriptions}</li>
+                        </>
+                      )}
+                    </ul>
+                  </div>
+                )}
               </div>
 
               <div className="mt-4 flex justify-end">
@@ -185,22 +262,25 @@ const Reports = () => {
           <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Quick Reports</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <button
-              onClick={() => handleGenerateReport('inventory')}
-              className="p-4 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600"
+              onClick={() => generateReport('inventory')}
+              disabled={loading}
+              className="p-4 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 disabled:opacity-50"
             >
               <h4 className="font-medium text-gray-900 dark:text-white">Inventory Report</h4>
               <p className="text-sm text-gray-500 dark:text-gray-400">Current stock levels and alerts</p>
             </button>
             <button
-              onClick={() => handleGenerateReport('sales')}
-              className="p-4 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600"
+              onClick={() => generateReport('sales')}
+              disabled={loading}
+              className="p-4 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 disabled:opacity-50"
             >
               <h4 className="font-medium text-gray-900 dark:text-white">Sales Report</h4>
               <p className="text-sm text-gray-500 dark:text-gray-400">Daily and monthly sales analysis</p>
             </button>
             <button
-              onClick={() => handleGenerateReport('patient')}
-              className="p-4 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600"
+              onClick={() => generateReport('patient')}
+              disabled={loading}
+              className="p-4 border rounded hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 disabled:opacity-50"
             >
               <h4 className="font-medium text-gray-900 dark:text-white">Patient Report</h4>
               <p className="text-sm text-gray-500 dark:text-gray-400">Medication history and compliance</p>

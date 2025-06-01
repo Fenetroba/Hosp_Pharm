@@ -74,20 +74,19 @@ export const UpdatePrescription = async(req,res)=>{
          const {id}=req.params;
          const {status}=req.body;
          try {
-            const prescription = await Prescription.findByIdAndUpdate(id,{
-               status
-            });
+            const prescription = await Prescription.findByIdAndUpdate(
+               id,
+               { status },
+               { runValidators: false, new: true }
+            );
             if(!prescription){
                return res.status(404).json({success:false,message:"prescription not found"});
             }
-            await prescription.save();
             return res.status(200).json({success:true,message:"prescription updated successfully",prescription});
          } catch (error) {
             console.error(error);
             return res.status(500).json({success:false,message:"internal server error"});
          }
-
-         
 }
 export const DeletePrescription = async(req,res)=>{
       const {id}=req.params;
