@@ -2,7 +2,7 @@
   import { useDispatch, useSelector } from "react-redux";
   import UsersDetail_data from "./UsersDetail_data";
   import { FetchAllUsers } from "@/store/UserData__slice";
-  import SkeletonLoader from "../ui/skeletonLoader"; // Create or import a loading component
+  import SkeletonLoader from "../ui/SkeletonLoader"; // Create or import a loading component
 
   const Admin_main = () => {
     const { UsersList, isLoading, error } = useSelector((state) => state.user);
