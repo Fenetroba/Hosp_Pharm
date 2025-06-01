@@ -50,20 +50,40 @@ app.use('/api/reports', reportRouter)
 const frontendBuildPath = path.join(__dirname, "../front_end/dist");
 const indexHtmlPath = path.join(frontendBuildPath, "index.html");
 
-if (fs.existsSync(frontendBuildPath) && fs.existsSync(indexHtmlPath)) {
-  // Serve static files from the frontend build directory
-  app.use(express.static(frontendBuildPath));
+console.log("Checking frontend build...");
+console.log("Frontend build path:", frontendBuildPath);
+console.log("Index.html path:", indexHtmlPath);
 
-  // Handle all other routes by serving the index.html
-  app.get("*", (req, res) => {
-    res.sendFile(indexHtmlPath);
-  });
+if (fs.existsSync(frontendBuildPath)) {
+  console.log("Frontend build directory exists");
+  if (fs.existsSync(indexHtmlPath)) {
+    console.log("index.html found, serving frontend application");
+    // Serve static files from the frontend build directory
+    app.use(express.static(frontendBuildPath));
+
+    // Handle all other routes by serving the index.html
+    app.get("*", (req, res) => {
+      res.sendFile(indexHtmlPath);
+    });
+  } else {
+    console.log("index.html not found in build directory");
+    console.log("Directory contents:", fs.readdirSync(frontendBuildPath));
+    // API-only mode route handler
+    app.get("*", (req, res) => {
+      res.json({ 
+        message: "API is running. Frontend build is incomplete - index.html not found.",
+        status: "api-only"
+      });
+    });
+  }
 } else {
-  console.log("Frontend build not found. Running in API-only mode.");
-  
+  console.log("Frontend build directory not found");
   // API-only mode route handler
   app.get("*", (req, res) => {
-    res.json({ message: "API is running. Frontend build not found." });
+    res.json({ 
+      message: "API is running. Frontend build not found.",
+      status: "api-only"
+    });
   });
 }
 
