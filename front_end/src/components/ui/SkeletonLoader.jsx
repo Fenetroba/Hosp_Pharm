@@ -3,14 +3,14 @@ import './skeletonLoader.css'
 const skeletonLoader = () => {
   return (
 
-     <div class="loader">
-     <div class="loader-square"></div>
-     <div class="loader-square"></div>
-     <div class="loader-square"></div>
-     <div class="loader-square"></div>
-     <div class="loader-square"></div>
-     <div class="loader-square"></div>
-     <div class="loader-square"></div>
+     <div className="loader">
+     <div className="loader-square"></div>
+     <div className="loader-square"></div>
+     <div className="loader-square"></div>
+     <div className="loader-square"></div>
+     <div className="loader-square"></div>
+     <div className="loader-square"></div>
+     <div className="loader-square"></div>
      </div>
   )
 }
