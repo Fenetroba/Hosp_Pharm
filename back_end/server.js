@@ -19,11 +19,16 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
   ? ['https://hosp-pharm-2.onrender.com', 'https://hosp-pharm-2.com']
   : ['http://localhost:5173'];
 
+console.log('Allowed Origins:', allowedOrigins);
+console.log('Current Environment:', process.env.NODE_ENV);
+
 app.use(cors({
   origin: function(origin, callback) {
+    console.log('Request origin:', origin);
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
+      console.log('CORS blocked request from:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -41,11 +46,20 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/api/user', User_RegisterRouter)
-app.use('/api/auth', User_LoginRouter)
-app.use('/api/prescription', PrescriptionRouter)
-app.use('/api/payment',financeRouter)
-app.use('/api/reports', reportRouter)
+// Test route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'API is running',
+    environment: process.env.NODE_ENV,
+    port: PORT
+  });
+});
+
+app.use('/api/user', User_RegisterRouter);
+app.use('/api/auth', User_LoginRouter);
+app.use('/api/prescription', PrescriptionRouter);
+app.use('/api/payment', financeRouter);
+app.use('/api/reports', reportRouter);
 
 // Add a health check endpoint
 app.get('/api/health', (req, res) => {
@@ -55,5 +69,6 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => { 
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`API URL: http://localhost:${PORT}`);
   dbconnect();
 });  
