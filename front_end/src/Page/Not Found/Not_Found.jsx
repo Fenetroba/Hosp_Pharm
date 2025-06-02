@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import folde from '../../assets/folder.png'
-import './NotFound.css'; // Optional: Import CSS for styling
+import './notFound.css'; // Optional: Import CSS for styling
 
 const NotFound = () => {
   return (

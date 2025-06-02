@@ -1,5 +1,5 @@
 import React from "react";
-import "./style/hospiPharmColla.css"; // Import your CSS file
+
 import image1 from "../assets/image1 (1).jpg";  
 import image2 from "../assets/image1 (1).webp";
 import image3 from "../assets/image1 (2).jpg";
