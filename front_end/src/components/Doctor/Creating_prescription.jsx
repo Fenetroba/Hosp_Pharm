@@ -81,7 +81,7 @@ const Creating_prescription = ({user}) => {
 
   const CreatePrescription = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    toast("Prescription is Created")
+    toast("Creating prescription...");
 
     if (validateForm()) {
       try {
@@ -96,30 +96,13 @@ const Creating_prescription = ({user}) => {
           patientNo: "",
           date: new Date().toISOString().split('T')[0], // Reset date to today's date
           status: "pending", // Reset status
-         
           medications: [],
         });
         setSeePrescription(false); // Hide the prescription form after submission
         setValidationErrors({}); // Clear validation errors
-        toast.success('Prescription created successfully!', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }); // Show success notification
+        toast.success('Prescription created successfully!');
       } catch (error) {
-        toast.error('Failed to create prescription.', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }); // Show error notification
+        toast.error(error.message || 'Failed to create prescription.');
       }
     }
   };

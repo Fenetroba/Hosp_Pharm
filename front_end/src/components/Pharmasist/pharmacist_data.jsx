@@ -29,15 +29,13 @@ const Pharmacist_data = ({ user }) => {
     dispatch(UpdateUser({ userId: user?._id, userData: userUpdate }))
       .then(data => {
         if(data.error?.message==="Rejected"){
-          toast.success(data.payload.message);
+          toast.success(data.payload.message || "Update rejected");
         }else{
-          toast.success("User updated SuccussFull!",data.payload.message);
-
+          toast.success("User updated Successfully!");
         }
-        console.log(data.payload.message);
       })
       .catch(error => {
-        toast.error("Error updating user: " + error.message);
+        toast.error(error.message || "Error updating user");
         console.error("Error updating user:", error);
       });
   

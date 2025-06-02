@@ -22,7 +22,6 @@ const RelatedFinance = () => {
       return;
     }
     try {
-
       const result = await dispatch(create__finance(Finance_record)).unwrap();
       
       if (result) {
@@ -33,7 +32,7 @@ const RelatedFinance = () => {
         });
       }
     } catch (err) {
-      toast.error(error || "Failed to add finance record");
+      toast.error(err.message || "Failed to add finance record");
     }
   };
 
