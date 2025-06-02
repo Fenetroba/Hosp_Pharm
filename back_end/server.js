@@ -16,7 +16,7 @@ const app = express();
 
 // Configure CORS based on environment
 const allowedOrigins = process.env.NODE_ENV === 'production' 
-  ? ['https://hosp-pharm-2.onrender.com', 'https://hosp-pharm-2.com']
+  ? ['https://hospipharma.onrender.com', 'https://hosp-pharm-2.onrender.com']
   : ['http://localhost:5173'];
 
 console.log('Allowed Origins:', allowedOrigins);
