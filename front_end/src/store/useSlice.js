@@ -130,21 +130,20 @@ export const authSlice = createSlice({
       })
       .addCase(CheckAuths.pending, (state) => {
         state.loading = true;
-        state.isAuthenticated=false,
+        state.isAuthenticated = false;
         state.error = null;
       })
-    .addCase(CheckAuths.fulfilled, (state, action) => {
-      state.loading = false;
-      state.isAuthenticated = true;
-      state.user = action.payload.user; // Ensure this matches your API response
-    
-    })
-    .addCase(CheckAuths.rejected, (state, action) => {
-      state.loading = false;
-      state.isAuthenticated = false;
-      state.user = null;
-     
-    });
+      .addCase(CheckAuths.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload.user || null;
+      })
+      .addCase(CheckAuths.rejected, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.error = action.payload?.message || "Authentication check failed";
+      });
   },
 });
 

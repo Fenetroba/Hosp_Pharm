@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import User from '../models/User.js';
 
 dotenv.config();
 
@@ -18,15 +19,22 @@ const authMiddleware = async (req, res, next) => {
         // Verify token
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         
+        // Fetch user from database to ensure we have the latest data
+        const user = await User.findById(decoded.userId).select('-password');
+        
+        if (!user) {
+            return res.status(401).json({ 
+                message: "User not found. Please log in again." 
+            });
+        }
+
         // Attach user information to request
         req.user = {
-            userIds: decoded.userId,
-            username: decoded.username,
-            useremail: decoded.useremail,
-            userrole: decoded.userrole,
-            date:decoded.date
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role
         };
-       
 
         // Proceed to next middleware
         next();
