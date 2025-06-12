@@ -1,10 +1,10 @@
 import React from "react";
 
 import image1 from "../assets/image1 (1).jpg";  
-import image2 from "../assets/image1 (1).webp";
-import image3 from "../assets/image1 (2).jpg";
-import image4 from "../assets/image1 (3).jpg";
-import image5 from "../assets/drugs.jpg";
+import image4 from "../assets/image1 (1).webp";
+import image5 from "../assets/image1 (2).jpg";
+import image3 from "../assets/image1 (3).jpg";
+import image2 from "../assets/drugs.jpg";
 import { motion } from "framer-motion";
 
 const HospiPharmColla = () => {

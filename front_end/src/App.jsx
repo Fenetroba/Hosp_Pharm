@@ -5,7 +5,6 @@ import HeroSection from "./Layers/HeroSection";
 import BottomNav from "./Layers/BottomNav";
 import HospiPharmColla from "./Layers/HospiPharmColla";
 import AboutUs from "./Layers/AboutUs";
-import Testimonials from "./Layers/Testimonials";
 import Contact from "./Layers/CotactUs"; // Consider renaming for consistency
 import Footer from "./Layers/Footer";
 import Rolecheck from "./Auth/RoleChecker/Rolecheck";
@@ -38,6 +37,7 @@ function App() {
 
   useEffect(() => {
     dispatch(CheckAuths());
+
     
   }, []);
 
@@ -58,7 +58,7 @@ function App() {
               <Counter />
               <HospiPharmColla />
               <AboutUs />
-              <Testimonials />
+        
               <FAQ/>
               <Contact />
               <Footer />

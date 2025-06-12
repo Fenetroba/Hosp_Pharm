@@ -6,17 +6,7 @@
      text-align: center;
  }
  
- .semicircle {
-     position: absolute;
-     top: -50px; /* Adjust based on your design */
-     left: 0;
-     right: 0;
-     height: 100px;
-     background-color: #fff;
-     border-radius: 0 0 100% 100%;
-     z-index: 0; /* Ensure it is behind the footer content */
- }
- 
+
  .footer-content {
      position: relative; /* Relative positioning for footer content */
      z-index: 1; /* Bring footer content above the semicircle */
@@ -61,7 +51,7 @@
 
 .semicircle {
      position: relative;
-     background:linear-gradient(rgba(97, 152, 197, 0.24) ,rgb(247, 243, 255)),url('../../assets/doctorscolabration.jpg') center;
+     /* background:rgb(255, 255, 255); */
      background-size: cover;
      background-position: center;
      height: 30vh;

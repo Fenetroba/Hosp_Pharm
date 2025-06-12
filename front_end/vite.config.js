@@ -13,25 +13,11 @@ export default defineConfig({
     
   },
 
-  build: {
-    outDir: 'dist',
-    sourcemap: false,
-    minify: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          redux: ['@reduxjs/toolkit', 'react-redux'],
-        },
-      },
-    },
-  },
   server: {
-    port: 5173,
     proxy: {
       '/api': {
-        target: 'https://hosp-pharm-2.onrender.com',
-        changeOrigin: true,
+        target: 'http://localhost:5000/',
+        // changeOrigin: true,
         secure: false,
       },
     },

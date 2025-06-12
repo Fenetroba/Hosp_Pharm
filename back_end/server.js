@@ -13,25 +13,8 @@ import financeRouter from './routes/Financial.js';
 import reportRouter from './routes/reportRoutes.js';
 
 const app = express();
-
-// Configure CORS based on environment
-const allowedOrigins = process.env.NODE_ENV === 'production' 
-  ? ['https://hospipharma.onrender.com', 'https://hosp-pharm-2.onrender.com']
-  : ['http://localhost:5173'];
-
-console.log('Allowed Origins:', allowedOrigins);
-console.log('Current Environment:', process.env.NODE_ENV);
-
 app.use(cors({
-  origin: function(origin, callback) {
-    console.log('Request origin:', origin);
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log('CORS blocked request from:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: 'http://localhost:5173',  // Explicitly set the frontend origin
   methods: ["POST", "GET", "PATCH", "DELETE", "PUT"],
   allowedHeaders: [
     "Content-Type",
@@ -42,7 +25,15 @@ app.use(cors({
   ],
   credentials: true
 }));
- 
+
+// Configure CORS based on environment
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+  ? ['https://hospipharma.onrender.com', 'https://hosp-pharm-2.onrender.com']
+  : ['http://localhost:5173'];
+
+console.log('Allowed Origins:', allowedOrigins);
+console.log('Current Environment:', process.env.NODE_ENV);
+
 app.use(express.json());
 app.use(cookieParser());
 
