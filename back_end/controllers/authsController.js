@@ -37,11 +37,16 @@ const setCookies = (res, accessToken, refreshToken) => {
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict"
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    path: "/",
+    maxAge: 15 * 60 * 1000 // 15 minutes
   };
 
-  res.cookie("access_Token", accessToken, { ...cookieOptions, maxAge: 15 * 60 * 1000 });
-  res.cookie("refresh_Token", refreshToken, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 * 1000 });
+  res.cookie("access_Token", accessToken, cookieOptions);
+  res.cookie("refresh_Token", refreshToken, { 
+    ...cookieOptions, 
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+  });
 };
 
 // Login controller

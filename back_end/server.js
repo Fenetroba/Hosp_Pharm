@@ -13,18 +13,6 @@ import financeRouter from './routes/Financial.js';
 import reportRouter from './routes/reportRoutes.js';
 
 const app = express();
-app.use(cors({
-  origin: 'https://hospipharma.onrender.com',  // Explicitly set the frontend origin
-  methods: ["POST", "GET", "PATCH", "DELETE", "PUT"],
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "Cache-Control",
-    "Expires",
-    "Pragma",
-  ],
-  credentials: true
-}));
 
 // Configure CORS based on environment
 const allowedOrigins = process.env.NODE_ENV === 'production' 
@@ -33,6 +21,32 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
 
 console.log('Allowed Origins:', allowedOrigins);
 console.log('Current Environment:', process.env.NODE_ENV);
+
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ["POST", "GET", "PATCH", "DELETE", "PUT", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Cache-Control",
+    "Expires",
+    "Pragma",
+    "X-Requested-With",
+    "Accept"
+  ],
+  exposedHeaders: ["Set-Cookie"],
+  maxAge: 86400 // 24 hours
+}));
 
 app.use(express.json());
 app.use(cookieParser());

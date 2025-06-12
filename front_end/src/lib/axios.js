@@ -7,27 +7,38 @@ const baseURL = import.meta.env.MODE === "development"
 
 const axiosInstance = axios.create({
   baseURL,
-  withCredentials: true, // Allow sending cookies with requests
+  withCredentials: true,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
   }
 });
 
-// Optional: Add interceptors for request/response handling
+// Add request interceptor to handle cookies
 axiosInstance.interceptors.request.use(config => {
-  // You can modify the request config here if needed
+  // Ensure credentials are included
+  config.withCredentials = true;
+  
+  // Add cache control headers
+  config.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+  config.headers['Pragma'] = 'no-cache';
+  config.headers['Expires'] = '0';
+  
   return config;
 }, error => {
-  // Handle request error here
   return Promise.reject(error);
 });
 
-axiosInstance.interceptors.response.use(response => {
-  // You can modify the response data here if needed
-  return response;
-}, error => {
-  // Handle response error here
-  return Promise.reject(error);
-});
+// Add response interceptor to handle errors
+axiosInstance.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      // Handle unauthorized error (e.g., redirect to login)
+      console.error('Authentication error:', error);
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axiosInstance;

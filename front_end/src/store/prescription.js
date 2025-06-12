@@ -72,7 +72,7 @@ export const fetch_byPatient_name = createAsyncThunk(
   'prescription/fetch_prescription_byPatient_name',
   async (patient_name, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/prescription/fetch_byPatient_name/${patient_name}`, {
+      const response = await axios.get(`/prescription/single_prescription/${patient_name}`, {
         withCredentials: true,
       });
       return response.data;
