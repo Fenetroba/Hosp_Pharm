@@ -14,7 +14,7 @@ import reportRouter from './routes/reportRoutes.js';
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:5173',  // Explicitly set the frontend origin
+  origin: 'https://hospipharma.onrender.com',  // Explicitly set the frontend origin
   methods: ["POST", "GET", "PATCH", "DELETE", "PUT"],
   allowedHeaders: [
     "Content-Type",
