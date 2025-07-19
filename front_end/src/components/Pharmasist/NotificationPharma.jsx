@@ -49,12 +49,13 @@ const NotificationPharma = () => {
 
     // Show a toast notification
     toast.success("Notification marked as read", {
-      description: notification.message
+      description: notification.message,
+    
     });
   };
 
   return (
-    <div className="text-[var(--sixP)] m-2 ">
+    <div className="text-[var(--sixP)] m-2  ">
       <Toaster />
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-center flex items-center gap-2 font-bold ml-2">
@@ -68,13 +69,13 @@ const NotificationPharma = () => {
         <Bell className="w-5 h-5" />
       </div>
 
-      <div className="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto">
+      <div className="space-y-2 overflow-y-auto">
         {notifications.length > 0 ? (
           notifications.map((notification) => (
             <div
               key={notification.id}
               onClick={() => handleNotificationClick(notification)}
-              className="p-3 rounded-lg cursor-pointer transition-colors bg-blue-50 hover:bg-blue-100"
+              className="p-3 rounded-lg cursor-pointer transition-colors bg-green-500 "
             >
               <div className="flex justify-between items-start">
                 <div>

@@ -3,6 +3,7 @@ import "./Style/aboutUs.css";
 import sample from "../assets/some.jpg";
 import { motion } from "framer-motion";
 import { Pill, Stethoscope, Heart, Users, Shield, Clock } from "lucide-react";
+import image4 from "../assets/doctorscolabration.jpg";
 
 const services = [
   {
@@ -29,18 +30,19 @@ const AboutUs = () => {
   return (
     <div className="min-h-screen  py-20 px-4 sm:px-6 lg:px-8" id="about">
       <div className="max-w-7xl mx-auto">
+          
         {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className=" mb-16 sm:flex items-center justify-around shadow-lg p-3"
         >
-          <h4 className="text-4xl font-bold  text-[var(--one)] mb-4">
+          
+          <p className="text-[16px]  text-[var(--0ne)] sm:w-[50%] ">
+          <h4 className="text-4xl font-bold  text-[var(--one)] mb-4 ">
             About Us
           </h4>
-          <div className="w-24 h-1 bg-blue-900 mx-auto mb-8"></div>
-          <p className="text-xl  text-[var(--0ne)] ">
             Welcome to <span className="text-blue-600 ">HospiPharma</span>'s
             Pharmacy Collaboration Program! We are dedicated to enhancing
             patient care through effective collaboration between pharmacists and
@@ -50,6 +52,10 @@ const AboutUs = () => {
             distinctio, autem quidem facere, consectetur maxime quaerat quo
             laborum.
           </p>
+
+          <div>
+          <img src={image4} className=" shadow-lg h-[400px] p-4 rounded-2xl mt-10" alt="image4" />
+        </div>
         </motion.div>
 
         {/* Mission Statement */}

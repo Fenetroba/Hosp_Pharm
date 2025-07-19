@@ -6,15 +6,15 @@ const HeroSection = () => {
   return (
      <section className="hero" id="home">
      <div className="hero-content">
-         <h1 className='font-bold text-4xl'>Welcome to the HospiPharma  System</h1>
-         {/* <p className='text-2xl'>Streamline your prescriptions and medication management with ease.</p> */}
-     </div>
-     <motion.div className="hero-image"
-       initial={{ opacity: 0, x: "100%" }}
-       animate={{ opacity: 1, x: 0 }}
+         <h1 className='font-bold text-4xl text-center shadow-lg rounded-2xl'>Welcome to the HospiPharma  System</h1>
+      
+      </div> 
+     <motion.div className="hero-image "
+       initial={{ opacity: 0,  }}
+       animate={{ opacity: 1, }}
        transition={{ duration: 1}}>
        
-         <img src={DoctorHand} alt="Pharmacy Collaboration"/>
+         <img src={DoctorHand} alt="Pharmacy Collaboration" className='h-5'/>
          
      </motion.div>
  </section>
