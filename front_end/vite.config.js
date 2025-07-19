@@ -1,24 +1,36 @@
 import { defineConfig } from 'vite'
-import path from "path"
 import react from '@vitejs/plugin-react'
+import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  server:{
-    proxy:{
-      "/api":{
-        target:"https://cosmetics-3o1c.onrender.com",
+  plugins: [react(), tailwindcss(),],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    minify: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          redux: ['@reduxjs/toolkit', 'react-redux'],
+        },
       },
     },
   },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-      '@/Components': path.resolve(__dirname, 'src/Components'),
+  server: {
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
-  },
- 
-
-)
+})
